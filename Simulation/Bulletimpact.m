@@ -139,6 +139,18 @@ deint=(ones(numpart,1))*0;
 %%
 t=0;
 steps=tf/dt;
+
+% Matrices para guardar información de la simulación.
+Coordenadas = zeros([size(coorbar), steps]);
+Velocidad1 = zeros([size(V1),steps]);
+Velocidad2 = zeros([size(V2),steps]);
+Presion = zeros([size(P),steps]);
+Esfuerzos11 = zeros([size(dev11), steps]);
+Esfuerzos12 = zeros([size(dev12), steps]);
+Esfuerzos21 = zeros([size(dev21), steps]);
+Esfuerzos22 = zeros([size(dev22), steps]);
+Densidad = zeros([size(Rho), steps]);
+
 for ti=1:steps
 %%
           
@@ -217,5 +229,16 @@ for ti=1:steps
      
     drawnow
     
-    
+    %%Guardar Info de la simulación.
+    Coordenadas(:,:,ti) = coorbar;
+    Velocidad1(:,:,ti) = V1;
+    Velocidad2(:,:,ti) = V2;
+    Presion(:,:,ti) = P;
+    Esfuerzos11(:,:,ti) = dev11;
+    Esfuerzos12(:,:,ti) = dev12;
+    Esfuerzos21(:,:,ti) = dev21;
+    Esfuerzos22(:,:,ti) = dev22;
+    Densidad(:,:,ti) = Rho;
+% Con estas matrices grabo las posiciones y propiedades de todas las
+% particulas para cada incremento de tiempo
 end
