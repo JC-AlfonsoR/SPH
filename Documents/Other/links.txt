@@ -1,0 +1,5 @@
+Links de LaTeX:
+http://en.wikibooks.org/wiki/LaTeX/Labels_and_Cross-referencing
+http://www.artofproblemsolving.com/Wiki/index.php/LaTeX:Symbols
+http://en.wikibooks.org/wiki/LaTeX/Floats,_Figures_and_Captions
+http://texblog.org/2008/10/16/lists-enumerate-itemize-description-and-how-to-change-them/
