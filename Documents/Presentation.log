@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2014.2.28)  22 FEB 2015 21:46
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2014.2.28)  23 FEB 2015 22:00
 entering extended mode
 **Presentation.tex
 
@@ -1296,88 +1296,92 @@ esentation.toc") [2
 
 ] [6
 
-] [7
-
 ]
-<./images/ParticleApprox.png, id=297, 260.47313pt x 228.855pt>
+<./images/ParticleApprox.png, id=273, 260.47313pt x 228.855pt>
 File: ./images/ParticleApprox.png Graphic file (type png)
 
 <use ./images/ParticleApprox.png>
-Package pdftex.def Info: ./images/ParticleApprox.png used on input line 156.
+Package pdftex.def Info: ./images/ParticleApprox.png used on input line 162.
 (pdftex.def)             Requested size: 130.23624pt x 114.42722pt.
 LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <14.4> not available
-(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 156.
- [8
+(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 162.
+ [7
 
  <C:/Users/J. Camilo/Dropbox/2015-1/Problema_Especial/Presentacion/Documents/im
-ages/ParticleApprox.png>] [9
+ages/ParticleApprox.png>] [8
+
+] [9
 
 ] [10
 
-] [11
-
 ]
-<./images/tr_i.png, id=421, 529.98pt x 578.16pt>
+[11
+
+] [12
+
+] [13
+
+] <./images/tr_i.png, id=494, 529.98pt x 578.16pt>
 File: ./images/tr_i.png Graphic file (type png)
- <use ./images/tr_i.png>
-Package pdftex.def Info: ./images/tr_i.png used on input line 202.
-(pdftex.def)             Requested size: 132.49466pt x 144.53964pt.
 
-<./images/tr_f.png, id=422, 529.98pt x 578.16pt>
+<use ./images/tr_i.png>
+Package pdftex.def Info: ./images/tr_i.png used on input line 234.
+(pdftex.def)             Requested size: 132.49466pt x 144.53964pt.
+ <./images/tr_f.png, id=495, 529.98pt x 578.16pt>
 File: ./images/tr_f.png Graphic file (type png)
- <use ./images/tr_f.png>
-Package pdftex.def Info: ./images/tr_f.png used on input line 202.
-(pdftex.def)             Requested size: 132.49466pt x 144.53964pt.
 
-[12
+<use ./images/tr_f.png>
+Package pdftex.def Info: ./images/tr_f.png used on input line 234.
+(pdftex.def)             Requested size: 132.49466pt x 144.53964pt.
+ [14
 
  <C:/Users/J. Camilo/Dropbox/2015-1/Problema_Especial/Presentacion/Documents/im
 ages/tr_i.png> <C:/Users/J. Camilo/Dropbox/2015-1/Problema_Especial/Presentacio
 n/Documents/images/tr_f.png>]
-<./images/BI_i.png, id=456, 529.98pt x 578.16pt>
+<./images/BI_i.png, id=529, 529.98pt x 578.16pt>
 File: ./images/BI_i.png Graphic file (type png)
  <use ./images/BI_i.png>
-Package pdftex.def Info: ./images/BI_i.png used on input line 210.
+Package pdftex.def Info: ./images/BI_i.png used on input line 242.
 (pdftex.def)             Requested size: 132.49466pt x 144.53964pt.
 
-<./images/BI_f.png, id=457, 529.98pt x 578.16pt>
+<./images/BI_f.png, id=530, 529.98pt x 578.16pt>
 File: ./images/BI_f.png Graphic file (type png)
  <use ./images/BI_f.png>
-Package pdftex.def Info: ./images/BI_f.png used on input line 210.
+Package pdftex.def Info: ./images/BI_f.png used on input line 242.
 (pdftex.def)             Requested size: 132.49466pt x 144.53964pt.
 
-[13
+[15
 
  <C:/Users/J. Camilo/Dropbox/2015-1/Problema_Especial/Presentacion/Documents/im
 ages/BI_i.png> <C:/Users/J. Camilo/Dropbox/2015-1/Problema_Especial/Presentacio
 n/Documents/images/BI_f.png>]
-<./images/BonB_i.png, id=490, 529.98pt x 578.16pt>
+<./images/BonB_i.png, id=562, 529.98pt x 578.16pt>
 File: ./images/BonB_i.png Graphic file (type png)
  <use ./images/BonB_i.png>
-Package pdftex.def Info: ./images/BonB_i.png used on input line 218.
+Package pdftex.def Info: ./images/BonB_i.png used on input line 250.
 (pdftex.def)             Requested size: 132.49466pt x 144.53964pt.
 
-<./images/BonB_f.png, id=491, 529.98pt x 578.16pt>
+<./images/BonB_f.png, id=563, 529.98pt x 578.16pt>
 File: ./images/BonB_f.png Graphic file (type png)
  <use ./images/BonB_f.png>
-Package pdftex.def Info: ./images/BonB_f.png used on input line 218.
+Package pdftex.def Info: ./images/BonB_f.png used on input line 250.
 (pdftex.def)             Requested size: 132.49466pt x 144.53964pt.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <9> on input line 218.
+(Font)              <9> on input line 250.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 218.
+(Font)              <6> on input line 250.
 LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <9> not available
-(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 218.
+(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 250.
 LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <6> not available
-(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 218.
+(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 250.
 LaTeX Font Info:    Font shape `T1/lmss/bx/it' in size <9> not available
-(Font)              Font shape `T1/lmss/bx/sl' tried instead on input line 218.
+(Font)              Font shape `T1/lmss/bx/sl' tried instead on input line 250.
 
 LaTeX Font Info:    Font shape `T1/lmss/bx/it' in size <6> not available
-(Font)              Font shape `T1/lmss/bx/sl' tried instead on input line 218.
+(Font)              Font shape `T1/lmss/bx/sl' tried instead on input line 250.
 
 
-[14
+[16
 
  <C:/Users/J. Camilo/Dropbox/2015-1/Problema_Especial/Presentacion/Documents/im
 ages/BonB_i.png> <C:/Users/J. Camilo/Dropbox/2015-1/Problema_Especial/Presentac
@@ -1385,22 +1389,22 @@ ion/Documents/images/BonB_f.png>]
 \tf@nav=\write6
 \tf@toc=\write7
 \tf@snm=\write8
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 220.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 220.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 252.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 252.
 
 ("C:\Users\J. Camilo\Dropbox\2015-1\Problema_Especial\Presentacion\Documents\Pr
 esentation.aux")
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 220.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 220.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 252.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 252.
 Package rerunfilecheck Info: File `Presentation.out' has not changed.
-(rerunfilecheck)             Checksum: 4E14508FD7389C5A7D6D19FA9B1A772D;405.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 220.
+(rerunfilecheck)             Checksum: 568598760388A320EA5282773A4B9067;477.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 252.
  ) 
 Here is how much of TeX's memory you used:
- 17853 strings out of 493921
- 337621 string characters out of 3147330
- 406820 words of memory out of 3000000
- 20616 multiletter control sequences out of 15000+200000
+ 17865 strings out of 493921
+ 337739 string characters out of 3147330
+ 406817 words of memory out of 3000000
+ 20623 multiletter control sequences out of 15000+200000
  92155 words of font info for 75 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
  56i,19n,68p,413b,654s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -1419,9 +1423,9 @@ m Files/MiKTeX 2.9/fonts/type1/public/lm/lmsso12.pfb><C:/Program Files/MiKTeX 2
 .9/fonts/type1/public/lm/lmsso8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/pu
 blic/lm/lmsso9.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmsy10.pf
 b><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmsy7.pfb>
-Output written on Presentation.pdf (14 pages, 422687 bytes).
+Output written on Presentation.pdf (16 pages, 444110 bytes).
 PDF statistics:
- 587 PDF objects out of 1000 (max. 8388607)
- 36 named destinations out of 1000 (max. 500000)
- 181 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 662 PDF objects out of 1000 (max. 8388607)
+ 41 named destinations out of 1000 (max. 500000)
+ 189 words of extra memory for PDF output out of 10000 (max. 10000000)
 

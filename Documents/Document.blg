@@ -1,8 +1,5 @@
 This is BibTeX, Version 0.99dThe top-level auxiliary file: Document.aux
 The style file: unsrt.bst
 Database file #1: mybib.bib
-Illegal end of database file---line 11 of file mybib.bib
- :  publisher={Uniandes - Departamento de ingenieria mecanica}
- :                                                            
-I'm skipping whatever remains of this entry
-(There was 1 error message)
+Warning--empty author and editor in Luna_SPH
+(There was 1 warning)

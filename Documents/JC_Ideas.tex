@@ -1,0 +1,31 @@
+\documentclass[12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+
+\title{JC ideas for SPH code}
+\date{\today}
+\author{JC}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\section{Intro}
+Those are some of my ideas to implement in the SPH code that I am working now.
+
+\section{Dynamic Smooth length}
+Allahdadi\cite{allahdadi93} suggest that using a dynamic smooth length could reduce the computational time of the simulation. When simulating shocks, for example, particles get closer between them. In consequence, the amount of particles that fall within the support domain of each particle increases and so does the number of calculations.
+
+\section{Impact Simulations}
+Among the tests tha i coul run, there are:
+\begin{itemize}
+\item Bullet impact on Sphere
+\item Different impact angles
+\end{itemize}
+I readed something of these in \cite{benz95}
+
+\bibliography{mybib}
+\bibliographystyle{unsrt}
+
+\end{document}

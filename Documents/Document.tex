@@ -1,4 +1,4 @@
-\documentclass[12pt]{thesis}
+\documentclass[12pt]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 \usepackage{graphicx}
@@ -112,14 +112,19 @@ An example of a smoothing function is the Jhonson kernel.
 \end{figure}
 
 \section{SPH for general dynamic Fluid Flows}
-
+ a
+ \\\\
+\textbf{4.4.9 Time integration}
+\\The discrete SPH equations can be integrated with standard methods such as the second order accurate Leap-Frog, predictor-corrector and Runge-Kutta schemes and so on.\\
+The explicit time integration schemes are sunject to the CFL (\textit{Courant-Friedrich-levy}) condition for stability. The CBL condition states that the computational domain of dependence in a numerical simulation should include the physical domain of dependence, or the maximum speed of numerical propagation must exceed the maximum speed of physical propagation. This CFl condition requieres the time step to be proportional to the smallest spatial particle resolution, which in SPH applications is represented by the smallest smoothing length\cite{Liu_SPH}
+\[\Delta t=min\left(\frac{h_i}{c}\right)\]
 
 \chapter{Luna}
 \section{Introduction}
 Fragil materials used as armour present a failure by Spalling, it is the fragil fragmentation of the material when it is being perforated. The sparced fragments are dangerous because of its high velocity.\\ \\
 
 \textbf{Constitutive Model of Material}\\
-WHen adapting the SPH formulation to solid mechanics, the strss tensor have to include the effect of the deviatoric stress. The stress tensor has two parts:
+WHen adapting the SPH formulation to solid mechanics, the stress tensor have to include the effect of the deviatoric stress. The stress tensor has two parts:
 \begin{itemize}
 \item Hidrostatic Pressure
 \item Deviatoric Stress
@@ -144,8 +149,60 @@ One needs to calculat pressure from the other state variables, here the Mie-Grun
 where sub-index $H$ referes to Huggoniot curve, $\Gamma$ is the Grunienesen parameter and $\eta$ is the density change rate $\eta=\frac{\rho}{\rho_0}-1$
 \\ \\
 \textbf{Material Model}\\ 
-Luna employs the Grady\& Kipp fracture model. This model determines a statistical failures dsitribution inside the material. In SPH we need to explicity determine those failures inside the material.
+Luna employs the Grady\& Kipp fracture model. This model determines a statistical failures dsitribution inside the material. In SPH we need to explicity determine those failures inside the material.\cite{Luna_SPH}
 
+
+
+\chapter{High Strain Lagrangian hydrodynamics: a three-dimensional SPH code for dynamic material response}
+SPH is a pure Langrangian particle method. The absense oh mesh means that large deformations can be computed in a pure Lagrangian frame.\cite{allahdadi93}\\
+
+\textbf{The Method}\\
+The foundation of SPH is the interpolation theory. The conservation laws of continuum fluid dynamics, in the form of partial differential equations, are transformed into integral equations through the use of an interpolation function that gives the \textit{kernel estimate} of the field variables at a point. Computationally, information is known at discrete points, so that the integrals are evaluated as sums over neighboring points.These interaction result in a net force which will accelerate the particle.\cite{allahdadi93}\\
+The interesting point in the SPH formulation is that the spatial derivative of physical properties is evaluated through the sum of the function discrete values and derivative of the kernel operator.\\
+
+\textbf{SPH equations}\\
+The equations of SPH are the equations of continuum mechanics, where the dependent variables are:
+\begin{itemize}
+\item Density
+\item Specific internal eenrgy
+\item velocity
+\item Stress tensor
+\end{itemize}
+On the other hand, the independet varialbes are the spatial coordinates and the time. The total time derivatives are taken in the moving Langrangian frame.\\
+
+\textbf{Artificial Viscocityu \& wall heating}
+***
+\\
+
+\textbf{Consitutive Relations}\\
+The stress tensor is defined in terms of an isotropic part which is the Pressure $P$ and the traceless symetric deviatoric stress $S$:
+\[\sigma^{\alpha\beta} = P^{\alpha\beta}-S{\alpha\beta}\]
+The pressure is normally computed using an equation of state, such as the Mie.Gruneisen equation for solids:\\
+Mie-Gruniensen $P=P_H(1-\Gamma'\eta)+\Gamma'\rho E$
+\[P_H=\left(\begin{array}{c}
+ a_0\eta+b_0\eta^2+c_0\eta^3 \,\ \eta>0\\
+ a_0\eta \,\ \eta<0
+\end{array}\right)\]
+The subscript $H$ refers to the Hugoniot curve, while $\eta=\rho/\rho-1$ is used to represent the compression and $\Gamma'=\Gamma\rho/\rho_0$.\\
+For the anisotropic part, we write a prognostic equatiobn for the deviatoric stress assuming small displacements
+\[\dot{S}^{\alpha\beta}=\mu\epsilon^{\alpha\beta} = \mu\left(\epsilon^{\alpha\beta}-\frac{1}{3}\delta^{\alpha\beta}\epsilon^{\gamma\gamma}\right)\]
+where $\mu$ es the shear modulus and $\epsilon$ is the traceless rate of strain.  However, for finite displacements this equation is not not material frame indifferent, that is, the material response will depend in an unphysical way on rotations of the material and of the observer describing it. The Jaumann rate is the most widely used in codes and we adopt it also. With Jaumann rate, our constitutive equation is:
+\[\dot{S}^{\alpha\beta} - S^{\alpha\beta}R^{\beta\gamma} - S^{\gamma\beta}R^{\alpha\gamma} = \mu\bar{\epsilon}^{\alpha\beta}\]
+*** It looks like those equations are a little bit different from the equations of Luna. \textit{I think that Luna just wrote them wrong in his document}
+The strain rate and rotation rate tensors that have been used are defined as follows:
+---
+\\\\
+\textbf{Time integration}\\
+The discrete SPH equations can be integrated with standard methods such as Runge-Kutta.\\
+The explicit time integration schemes are subjected to the CFL condition (Courant-Friederichs-Levy) for stability. The CFl condition states that the computational domain of dependence in a numerical simulation should include the physical domain of dependence, or the maximum speed of numerical propagation must exceed the maximum spedd of physical propagation. This CFL condition requieres the time step to be proportional to the smallest spatial particle resolution, which in SPH applications is represented by the smallest smoothing length
+\[\Delta=min\left(\frac{h_i}{c}\right)\]
+
+\chapter{Simulations of brittle solids using smooth particle hydrodynamics}
+The hydrodinamical quantities in SPH are known at a finite number of points, called particles, which move with the flow. given any spatial distribution of these points, the SPH technique allows the computation of saptial derivatives without an underlying grid. Once the spatial derivative have been computed and forces determined, time integration proceeds in the usual way.\cite{benz95}
+SPH is able to simulate solids by including the non-diagonal terms of the stress tensor (Using Hoo'ks law) modified by a von Mises yielding relation for stress beyond the elastic limit. At the lower stress associated with brittle fracture, we developed a new fracture model based on the nucleation of incipient flaws whose number density is given by a Weibull distribution.\\\\
+\textbf{Equations for an Elastic-perfectly plastic strength model\\}
+
+The stress tensor is given by $\sigma^{\alpha\beta}=-P\delta^{\alpha\beta}+S^{\alpha\beta}$ where $P$ is the pressure, $S^{\alpha\beta}$ the traceless deviatoric tensor and $\delta^{\alpha\beta}$ the kronecker symbol.
 \bibliography{mybib}
 \bibliographystyle{unsrt}
 \end{document}\

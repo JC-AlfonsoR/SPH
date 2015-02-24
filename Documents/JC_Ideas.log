@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2014.2.28)  23 FEB 2015 21:17
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2014.2.28)  23 FEB 2015 20:35
 entering extended mode
-**Document.tex
+**JC_Ideas.tex
 
-("C:\Users\J. Camilo\Dropbox\2015-1\Problema_Especial\Presentacion\Documents\Do
-cument.tex"
+("C:\Users\J. Camilo\Dropbox\2015-1\Problema_Especial\Presentacion\Documents\JC
+_Ideas.tex"
 LaTeX2e <2011/06/27>
 Babel <v3.8m> and hyphenation patterns for english, afrikaans, ancientgreek, ar
 abic, armenian, assamese, basque, bengali, bokmal, bulgarian, catalan, coptic, 
@@ -15,20 +15,19 @@ german-x-2013-05-26, nynorsk, oriya, panjabi, pinyin, polish, portuguese, roman
 ian, russian, sanskrit, serbian, slovak, slovenian, spanish, swedish, swissgerm
 an, tamil, telugu, turkish, turkmen, ukenglish, ukrainian, uppersorbian, usengl
 ishmax, welsh, loaded.
-("C:\Program Files\MiKTeX 2.9\tex\latex\base\book.cls"
-Document Class: book 2014/09/29 v1.4h Standard LaTeX document class
-("C:\Program Files\MiKTeX 2.9\tex\latex\base\bk12.clo"
-File: bk12.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
+("C:\Program Files\MiKTeX 2.9\tex\latex\base\article.cls"
+Document Class: article 2014/09/29 v1.4h Standard LaTeX document class
+("C:\Program Files\MiKTeX 2.9\tex\latex\base\size12.clo"
+File: size12.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
 )
 \c@part=\count79
-\c@chapter=\count80
-\c@section=\count81
-\c@subsection=\count82
-\c@subsubsection=\count83
-\c@paragraph=\count84
-\c@subparagraph=\count85
-\c@figure=\count86
-\c@table=\count87
+\c@section=\count80
+\c@subsection=\count81
+\c@subsubsection=\count82
+\c@paragraph=\count83
+\c@subparagraph=\count84
+\c@figure=\count85
+\c@table=\count86
 \abovecaptionskip=\skip41
 \belowcaptionskip=\skip42
 \bibindent=\dimen102
@@ -269,262 +268,64 @@ Language: english 2012/08/20 v3.3p English support from the babel system
 File: babel.def 2014/09/25 3.9l Babel common definitions
 
 (C:\ProgramData\MiKTeX\2.9\tex\generic\config\language.def)
-\babel@savecnt=\count88
+\babel@savecnt=\count87
 \U@D=\dimen103
 )
 \l@canadian = a dialect from \language\l@american 
 \l@australian = a dialect from \language\l@british 
 \l@newzealand = a dialect from \language\l@british 
 ))
-("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\graphicx.sty"
-Package: graphicx 2014/10/28 v1.0g Enhanced LaTeX Graphics (DPC,SPQR)
-
-("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\keyval.sty"
-Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
-\KV@toks@=\toks16
-)
-("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\graphics.sty"
-Package: graphics 2014/10/28 v1.0p Standard LaTeX Graphics (DPC,SPQR)
-
-("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\trig.sty"
-Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
-)
-("C:\Program Files\MiKTeX 2.9\tex\latex\00miktex\graphics.cfg"
-File: graphics.cfg 2007/01/18 v1.5 graphics configuration of teTeX/TeXLive
-)
-Package graphics Info: Driver file: pdftex.def on input line 91.
-
-("C:\Program Files\MiKTeX 2.9\tex\latex\pdftex-def\pdftex.def"
-File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
-
-("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\infwarerr.sty"
-Package: infwarerr 2010/04/08 v1.3 Providing info/warning/error messages (HO)
-)
-("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\ltxcmds.sty"
-Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
-)
-\Gread@gobject=\count89
-))
-\Gin@req@height=\dimen104
-\Gin@req@width=\dimen105
-)
-("C:\Users\J. Camilo\Dropbox\2015-1\Problema_Especial\Presentacion\Documents\Do
-cument.aux")
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 7.
-LaTeX Font Info:    ... okay on input line 7.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 7.
-LaTeX Font Info:    ... okay on input line 7.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 7.
-LaTeX Font Info:    ... okay on input line 7.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 7.
-LaTeX Font Info:    ... okay on input line 7.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 7.
-LaTeX Font Info:    ... okay on input line 7.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 7.
-LaTeX Font Info:    ... okay on input line 7.
-
-("C:\Users\J. Camilo\AppData\Roaming\MiKTeX\2.9\tex\context\base\supp-pdf.mkii"
-[Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count90
-\scratchdimen=\dimen106
-\scratchbox=\box26
-\nofMPsegments=\count91
-\nofMParguments=\count92
-\everyMPshowfont=\toks17
-\MPscratchCnt=\count93
-\MPscratchDim=\dimen107
-\MPnumerator=\count94
-\makeMPintoPDFobject=\count95
-\everyMPtoPDFconversion=\toks18
-)
+("C:\Users\J. Camilo\Dropbox\2015-1\Problema_Especial\Presentacion\Documents\JC
+_Ideas.aux")
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <14.4> on input line 12.
+(Font)              <14.4> on input line 11.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 12.
- [1
+(Font)              <7> on input line 11.
 
-
-{C:/Users/J. Camilo/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
-[2
-
-]
-("C:\Users\J. Camilo\Dropbox\2015-1\Problema_Especial\Presentacion\Documents\Do
-cument.toc"
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 4.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 4.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 4.
-)
+("C:\Users\J. Camilo\Dropbox\2015-1\Problema_Especial\Presentacion\Documents\JC
+_Ideas.toc")
 \tf@toc=\write3
- [3] [4
-
-] [5] [6]
-Chapter 1.
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 24.
-("C:\Program Files\MiKTeX 2.9\tex\latex\base\omscmr.fd"
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 23.
+ ("C:\Program Files\MiKTeX 2.9\tex\latex\base\omscmr.fd"
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 24.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 23.
+ [1
 
-Overfull \hbox (23.38739pt too wide) in paragraph at lines 31--32
-[]\OT1/cmr/m/n/12 Applicable in CFD, CSM, from micro-scale to macro-scale and a
-stronomical-
- []
-
-[7
-
-] [8]
-Underfull \hbox (badness 10000) in paragraph at lines 56--61
-
- []
-
-<./images/ParticleApprox.png, id=37, 260.47313pt x 228.855pt>
-File: ./images/ParticleApprox.png Graphic file (type png)
-
-<use ./images/ParticleApprox.png>
-Package pdftex.def Info: ./images/ParticleApprox.png used on input line 76.
-(pdftex.def)             Requested size: 208.37878pt x 183.08423pt.
- [9] [10 <C:/Users/J. Camilo/Dropbox/2015-1/Problema_Especial/Presentacion/Docu
-ments/images/ParticleApprox.png>]
-<./images/JohnsonKernel.png, id=47, 359.84438pt x 269.50688pt>
-File: ./images/JohnsonKernel.png Graphic file (type png)
-
-<use ./images/JohnsonKernel.png>
-Package pdftex.def Info: ./images/JohnsonKernel.png used on input line 109.
-(pdftex.def)             Requested size: 287.87589pt x 215.60579pt.
-
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 115--120
-
- []
-
-[11]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [12 <C:/Users/J. Camilo/Dropbox/2015-1/Problema_Especial/Presentacion/Document
-s/images/JohnsonKernel.png>] [13] [14
-
-]
-Chapter 2.
-
-Underfull \hbox (badness 10000) in paragraph at lines 124--125
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 124--125
-
- []
-
-[15]
-Underfull \hbox (badness 10000) in paragraph at lines 144--148
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 148--153
-
- []
-
-[16]
-Chapter 3.
-
-Underfull \hbox (badness 10000) in paragraph at lines 157--158
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 159--162
-
- []
-
-
-Underfull \vbox (badness 2970) has occurred while \output is active []
-
- [17
-
-]
-Underfull \hbox (badness 10000) in paragraph at lines 171--172
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 173--176
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 190--198
-
- []
-
-
-Overfull \hbox (409.86606pt too wide) has occurred while \output is active
-\OT1/cmr/m/n/12 18 \OT1/cmr/m/sl/12 CHAPTER 3.  HIGH STRAIN LAGRANGIAN HYDRODYN
-AMICS: A THREE-DIMENSIONAL SPH CODE FOR DYNAMIC MATERIAL RESPONSE
- []
-
-[18] [19]
-Overfull \hbox (409.86606pt too wide) has occurred while \output is active
-\OT1/cmr/m/n/12 20 \OT1/cmr/m/sl/12 CHAPTER 3.  HIGH STRAIN LAGRANGIAN HYDRODYN
-AMICS: A THREE-DIMENSIONAL SPH CODE FOR DYNAMIC MATERIAL RESPONSE
- []
-
-[20
-
-]
-Chapter 4.
-
-Underfull \hbox (badness 10000) in paragraph at lines 201--204
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 201--204
-
- []
-
-
-("C:\Users\J. Camilo\Dropbox\2015-1\Problema_Especial\Presentacion\Documents\Do
-cument.bbl" [21]
-Overfull \hbox (173.8195pt too wide) has occurred while \output is active
-\OT1/cmr/m/n/12 22 \OT1/cmr/m/sl/12 CHAPTER 4.  SIMULATIONS OF BRITTLE SOLIDS U
-SING SMOOTH PARTICLE HYDRODYNAMICS
- []
-
-[22
-
-]) [23]
-("C:\Users\J. Camilo\Dropbox\2015-1\Problema_Especial\Presentacion\Documents\Do
-cument.aux") ) 
+{C:/Users/J. Camilo/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
+("C:\Users\J. Camilo\Dropbox\2015-1\Problema_Especial\Presentacion\Documents\JC
+_Ideas.bbl") [2]
+("C:\Users\J. Camilo\Dropbox\2015-1\Problema_Especial\Presentacion\Documents\JC
+_Ideas.aux") ) 
 Here is how much of TeX's memory you used:
- 1922 strings out of 493921
- 25104 string characters out of 3147330
- 82819 words of memory out of 3000000
- 5209 multiletter control sequences out of 15000+200000
- 10113 words of font info for 35 fonts, out of 3000000 for 9000
+ 971 strings out of 493921
+ 12161 string characters out of 3147330
+ 66672 words of memory out of 3000000
+ 4300 multiletter control sequences out of 15000+200000
+ 6667 words of font info for 24 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
- 27i,7n,23p,591b,225s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 23i,6n,23p,369b,187s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx1
-2.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C
-:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Progra
-m Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Program Files/M
-iKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program Files/MiKTeX 2.9
-/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Program Files/MiKTeX 2.9/fonts/ty
-pe1/public/amsfonts/cm/cmr6.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public
-/amsfonts/cm/cmr8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/
-cm/cmsl12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy1
-0.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:
-/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti12.pfb>
-Output written on Document.pdf (23 pages, 210221 bytes).
+2.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:
+/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Program 
+Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files/Mi
+KTeX 2.9/fonts/type1/public/amsfonts/cm/cmti12.pfb>
+Output written on JC_Ideas.pdf (2 pages, 62178 bytes).
 PDF statistics:
- 129 PDF objects out of 1000 (max. 8388607)
+ 29 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 11 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
