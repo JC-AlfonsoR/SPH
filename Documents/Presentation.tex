@@ -104,33 +104,34 @@
 
 \end{frame}
 
+
+\subsection{Project Description}
+\begin{frame}{Objectives}
+\begin{Large}
+\begin{center}
+   Integrate bullet deformation \& target fracture in SPH simulations
+\end{center}
+\end{Large}
+   \begin{itemize}
+   \item Apply SPH Matlab routines from reference
+   \item Develop new SPH formulations
+   \item Implement Algorithm Modifications
+   \item Evaluate Performance
+   \item Manage code by version control software
+   \end{itemize}
+\end{frame}
+
+
 \begin{frame}{General Description}
 Smoothed Particle Hydrodynamics (\textit{SPH})
 \begin{itemize}
 \item Numerical method for approximating PDEs solutions
 \item Meshless*
 \item A set of \textit{particles} represent the total physical domain
-\item Langrangian description
+\item Langrangian description*
 \item Applications on Astrophysics, CFD, Solid Mechanics...
 \end{itemize}
 \end{frame}
-
-\subsection{Project Description}
-\begin{frame}{Objectives}
-\begin{Large}
-\begin{center}
-   Bullet Deformation \& Target Fracture
-\end{center}
-\end{Large}
-   \begin{itemize}
-   \item Apply SPH Matlab routines from reference
-   \item Develop new SPH formulations
-   \item Implement Algorithm Modification
-   \item Evaluate Performance
-   \item Manage Version Control Repository
-   \end{itemize}
-\end{frame}
-
 
 
 \section{SPH Formulation}
@@ -142,8 +143,8 @@ A function and its spatial derivative can be represented in an integral form
 $$f(x)=\int_{\Omega}{f(x')W(x-x',h)dx'}$$
 $$\nabla\cdot f(x)=-\int_{\Omega}{f(x')\cdot\nabla W(x-x',h)dx'}$$
 \begin{itemize}
-\item $x$ $x'$: spatial vectors
-\item $f(x)$: Function of $x$
+%\item $x$ $x'$: spatial vectors
+%\item $f(x)$: Function of $x$
 \item $\Omega$: Defined domain for $f(x)$
 \item $W$: Smoothing function (\textit{kernel*})
 \item $h$: Smoothing length
@@ -152,17 +153,17 @@ $$\nabla\cdot f(x)=-\int_{\Omega}{f(x')\cdot\nabla W(x-x',h)dx'}$$
 
 
 \begin{frame}{Smoothing Function (\textit{kernel})}
-Kernel properties
+Kernel properties $W(c-x',h)$
 \begin{figure}[h!]
-\includegraphics[scale=.5]{./images/ParticleApprox.png}
+\includegraphics[scale=.5]{./images/ParticleApprox.PNG}
 \end{figure}
 $$\lim_{h\to0}{W(x-x',h)}=\delta(x-x')$$
-$$\int_{\Omega}W(x-x',h)dx'=1=0$$
+$$\int_{\Omega}W(x-x',h)dx'=1$$
 $$W(x-x')=0\text{, for }|x-x'|>kh$$
 \end{frame}
 
 \begin{frame}{Conservation Equations}
-Continuoum domain
+Continuum domain
 \begin{itemize}
 \item Continuity
 \[\frac{D\rho}{Dt}=-\rho\frac{\partial \nu^\beta}{\partial x^\beta}\]
@@ -171,6 +172,7 @@ Continuoum domain
 \item Energy
 \[\frac{De}{Dt}=\frac{\sigma^{\alpha\beta}}{\rho}\frac{\partial\nu^\alpha}{\partial x^\beta}\]
 \end{itemize}
+Stress tensor* $\sigma^{\alpha\beta}$
 \end{frame}
 
 \begin{frame}{Constitutive Model}
@@ -190,7 +192,14 @@ Mie Gruniensen
 \end{frame}
 
 \begin{frame}{Material Model}
-
+Grady \& Kipp fragmentation model
+\begin{itemize}
+\item Existence of incipient flaws
+\item Number of flaws per unit volume $n(\epsilon)=k\epsilon^m$
+\item Local stress-release due to grow of cracks\\
+'Damage' $D$ $0\leq\ D \leq1$
+\[\sigma_D=\sigma(1-D)\]
+\end{itemize}
 \end{frame}
 
 \subsection{Particle Aproximation}
@@ -219,7 +228,7 @@ Discrete Domain
 \end{frame}
 
 \begin{frame}{Material Model}
-Grady \& Kipp fragmentation model
+ Material model in discrete domain
 
 \end{frame}
 
