@@ -10,10 +10,11 @@ clear all;clc;
 %{
 Todas las unidades en sistema internacional de unidades
 %}
-dy = 0.000384848;   %   [1x1] separacion entre particulas
-dx = dy;
-hdx = 2.0;          %   [#] cte para expandir radio
-h = hdx*dx;         %   [#] Radio para dominio soporte
+dy = 0.000384848;   %   [1x1] separacion entre particulas-
+dx = dy;            %-
+hdx = 2.0;          %   [#] cte para expandir radio-
+h = hdx*dx;         %   [#] Radio para dominio soporte-
+
 r0 = 7850;          %   [#] densidad volumetrica del acero
 m0 = dx*dy*r0;      %   [#] masa de una particula. (dz=1)
 v_s = 300;          %   [#] velocidad incial
@@ -28,7 +29,7 @@ v_s = 300;          %   [#] velocidad incial
     eta = 0.01;     %   [#]
     eps = 0.5;      %   [#]  ---
     
-bar_width = 0.0076; %   [#] Ancho de la barra
+bar_width = 0.0076; %   [#] Ancho de la barra-
 G = 8*10^10;        %   [#] Modulo Cortante
 Yo = 6*10^8;        %   [#] Esfuerzo de fluencia
 E = ss^2*r0;        %   [#] Modulo de Young - calculado con parametros 
@@ -50,19 +51,19 @@ tf = 1e-6*20;       %   [#] Tiempo final
 En esta secciï¿½n se crean las posiciones de las particulas y se asginan las
 fallas.
 %}
-xbar = -bar_width/2:dx:bar_width/2+dx;  % [#:dx:#] posiciones en x
-ybar = 0:dy:0.0254;         %   [#:dy:#]    posiciones en y
-[X,Y] = meshgrid(xbar,ybar);%   [Matriz]    Matrices que con la malla 
-                            %       de las posiciones para las particulas
+xbar = -bar_width/2:dx:bar_width/2+dx;  % [#:dx:#] posiciones en x-
+ybar = 0:dy:0.0254;         %   [#:dy:#]    posiciones en y-
+[X,Y] = meshgrid(xbar,ybar);%   [Matriz]    Matrices que con la malla -
+                            %       de las posiciones para las particulas-
 
-coorbar = [X(:),Y(:)];      %   | x_1 , y_1 |   En esta matriz organiza    
+coorbar = [X(:),Y(:)];      %   | x_1 , y_1 |   En esta matriz organiza   - 
                             %   | .   , .   |   todas las posiciones de las
-                            %   | x_n , y_n |   particulas.
-                            %   [npart x 2]
+                            %   | x_n , y_n |   particulas. -
+                            %   [npart x 2] -
 
-numrpart = length(X(:));    %   [#] Numero de particulas. ~size(1,coorbar)
-Nflaws = numrpart*log(numrpart);%[#] Numero de fallas en el material
-Nflaws = round(Nflaws);         % ~Modelo de fallas
+numrpart = length(X(:));    %   [#] Numero de particulas. ~size(1,coorbar) -
+Nflaws = numrpart*log(numrpart);%[#] Numero de fallas en el material-
+Nflaws = round(Nflaws);         % ~Modelo de fallas-
 Flawpart = randi(numrpart,Nflaws,1,'uint32'); %[Nflaws x 1]
                             %   vector que contiene # aleatorio entre 1 y
                             %   numpart para cada una de las Nflaws
@@ -72,8 +73,6 @@ numpart = numrpart;         %   [#] copia de numero de particulas
 [Flaws{1:numrpart,1}] = deal(zeros(0)); % Flaws [cell array] {numrpart x 1}
                             %   Cell array con 'numrpart' matrices vacias
                             %   Cell de prealocaciï¿½n para fallas
-
-
 for i = 1:length(Flawpart)                            
     Flaws{Flawpart(i),1}(size(Flaws{Flawpart(i),1})+1) = (i/(k*V))^(1/m);
 end
@@ -89,7 +88,7 @@ end
 % direccion para imprimir otro nï¿½mero entero. Asï¿½, si semialeatoriamente,
 % el numero 'k' aparecio 'n' veces en Flawpart, la celda Flaws en su
 % posicion 'k' debe contener una matriz nx1 de nï¿½mero enteros.
-
+%{
 %% Otras Matrices
 % ~Luna no espececifica comentarios para estas matrices
 M = (ones(numpart,1))*dx*dy*r0; %[numpart x 1] Masa de las particulas
@@ -163,18 +162,18 @@ eps22 = zeros(numpart,1);   %------------
 
 eint = zeros(numpart,1);    % Energï¿½a interna y derivada
 deint = zeros(numpart,1);   %   [numpart x 1]
-%% Incio de la simulación
+%% Incio de la simulaciï¿½n
 %{
-Aca se corre la simulaciónn
+Aca se corre la simulaciï¿½nn
 %}
 display('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
-display('   Inicio de la Simulación   ');
+display('   Inicio de la Simulaciï¿½n   ');
 display('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
 
 t = 0;              %   int     Tiempo inicial
 steps = tf/dt;      %   int     Numero de pasos
 
-% Matrices para guardar información de la simulación.
+% Matrices para guardar informaciï¿½n de la simulaciï¿½n.
 Coordenadas = zeros([size(coorbar), steps]);
 Velocidad1 = zeros([size(V1),steps]);
 Velocidad2 = zeros([size(V2),steps]);
@@ -347,7 +346,7 @@ for ti=1:steps
     axis([-0.0254 0.0254 -0.0254*2 0.0254*2])
     drawnow
     
-    %%Guardar Info de la simulación.
+    %%Guardar Info de la simulaciï¿½n.
     Coordenadas(:,:,ti) = coorbar;
     Velocidad1(:,:,ti) = V1;
     Velocidad2(:,:,ti) = V2;
@@ -376,4 +375,5 @@ Hasta aca entiendo todo
 Hay algunas modificaciones que quisiera hacer. Todas consisten en
 modificaicones de estilo, por ejemplo: crear una matriz de 0's en lugar de
 crear una matriz de 1's y multiplicarla por 0
+%}
 %}
