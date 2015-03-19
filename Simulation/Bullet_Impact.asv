@@ -16,8 +16,6 @@
 %
 % Simulacion de impacto entre proyectil ductil y objetivo fragil
 %
-% Disponible en repositorio publico <https://github.com/JC-AlfonsoR/SPH.git SPH>
-%
 % _Se omiten tildes para evitar problemas de compatibilidad en ecoding_
 clear all; clc; close all;
 %% Definir Geometria del Objetivo
@@ -174,14 +172,12 @@ E_int = zeros(N_part,1);        % Energia Interna
     dE_int = zeros(N_part,1);   % Derivada de Energia Interna
 
 %% Matrices para revisar
-% Hay que revisar esta matrices porque las propiedades deben inicializarse
-% de acuerdo al _tipo de las particulas_, es decir que se deben asignar
-% propiedades diferentes a las particulas del *objetivo* y a las particulas
-% del *proyectil*
+% Hay que revisar esta matrices porque las
+%
+%
+%
 M = ones(N_part,1)*V*T_r0;  % Masa
-cs = ones(N_part,1)*ss;     % Velocidad del sonido
+cs = ones(N_part,1)*T_r0;   % Velocidad del sonido
 Rho = ones(N_part,1)*T_r0;  % Densidad
     dRho = zeros(N_part,1); % Derivada de la densidad
 D = zeros(N_part,1);        % Damage
-
-%% Pruebas de formato

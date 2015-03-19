@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Bullet_Impact</title><meta name="generator" content="MATLAB 8.0"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2015-03-18"><meta name="DC.source" content="Bullet_Impact.m"><style type="text/css">
+      --><title>Bullet_Impact</title><meta name="generator" content="MATLAB 8.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2015-03-18"><meta name="DC.source" content="Bullet_Impact.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -23,7 +23,7 @@ a:visited { color:#004aa0; text-decoration:none; }
 
 p { padding:0px; margin:0px 0px 20px; }
 img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img { margin-bottom:0px; } 
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
 
 ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
 ul li { padding:0px; margin:0px 0px 7px 0px; }
@@ -38,11 +38,12 @@ ol li ul li { list-style:square; }
 
 .content { font-size:1.2em; line-height:140%; padding: 20px; }
 
-pre, tt, code { font-size:12px; }
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
 pre { margin:0px 0px 20px; }
-pre.error { color:red; }
 pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
 pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
 
 @media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
 
@@ -65,16 +66,16 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Bullet_Impact</a></li><li><a href="#2">Definir Geometria del Objetivo</a></li><li><a href="#3">Asignacion de defectos puntuales en Objetivo</a></li></ul></div><h2>Bullet_Impact<a name="1"></a></h2><p>Simulacion de impacto</p><p>Version 1</p><p>Marzo 18 - 2015</p><p>Author: <b>J. Camilo Alfonso R.</b></p><p><b>Problema Especial IMEC</b></p><p>Simulacion de impacto entre proyectil ductil y objetivo fragil</p><p><i>Se omiten tildes para evitar problemas de compatibilidad en ecoding</i></p><pre class="codeinput">clear <span class="string">all</span>; clc;
-</pre><h2>Definir Geometria del Objetivo<a name="2"></a></h2><p>Todas las unidades son dadas en el sistema internacional de unidades</p><p>Geometria del objetivo</p><pre class="codeinput">dy = 3e-4; <span class="comment">%    Separacion entre particulas</span>
-dx = dy;   <span class="comment">%</span>
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Bullet_Impact</a></li><li><a href="#2">Definir Geometria del Objetivo</a></li><li><a href="#3">Asignacion de defectos puntuales en Objetivo</a></li><li><a href="#5">Constantes del Material Objetivo</a></li><li><a href="#6">Definir Geometria del Proyectil</a></li><li><a href="#8">Representacion de condiciones iniciales</a></li><li><a href="#9">Alocacion de Matrices Requeridas para calculos</a></li><li><a href="#10">Matrices para revisar</a></li><li><a href="#11">Pruebas de formato</a></li></ul></div><h2>Bullet_Impact<a name="1"></a></h2><p>Simulacion de impacto</p><p>Version 1</p><p>Marzo 18 - 2015</p><p>Author: <b>J. Camilo Alfonso R.</b></p><p>Codigo basado en rutinas de Ing. <b>Daniel Luna</b></p><p>Profesor Asesor: <b>Andres Gonzalez Mancera</b></p><p><i><b>Problema Especial IMEC</b></i></p><p>Simulacion de impacto entre proyectil ductil y objetivo fragil</p><p>Disponible en repositorio publico <a href="https://github.com/JC-AlfonsoR/SPH.git">SPH</a></p><p><i>Se omiten tildes para evitar problemas de compatibilidad en ecoding</i></p><pre class="codeinput">clear <span class="string">all</span>; clc; close <span class="string">all</span>;
+</pre><h2>Definir Geometria del Objetivo<a name="2"></a></h2><p>Todas las unidades son dadas en el sistema internacional de unidades</p><p>Se define las posiciones de las particulas que conforman el objetivo</p><p>Geometria del objetivo</p><pre class="codeinput">T_dy = 3e-4; <span class="comment">%    Separacion entre particulas</span>
+T_dx = T_dy;   <span class="comment">%</span>
 k = 2.0;   <span class="comment">%    Constante para expandir radio de soporte</span>
-h = k*dx;  <span class="comment">%    Radio de soporte</span>
+h = k*T_dx;  <span class="comment">%    Radio de soporte</span>
 
-T_width = 0.0076;               <span class="comment">% Ancho del objetivo</span>
+T_width = 0.0006;               <span class="comment">% Ancho del objetivo</span>
 T_height = 0.0076;              <span class="comment">% Alto del objetivo</span>
-T_x = -T_width : dx : T_width;
-T_y = -T_height : dy : T_height;
+T_x = -T_width : T_dx : T_width;
+T_y = -T_height : T_dy : T_height;
 [X,Y] = meshgrid(T_x, T_y);     <span class="comment">% Matriz con la malla de las posiciones x,y para las particulas</span>
 Target = [X(:),Y(:)];           <span class="comment">%   | x_1 , y_1 |   En esta matriz organiza</span>
                                 <span class="comment">%   | .   , .   |   todas las posiciones de las</span>
@@ -84,13 +85,13 @@ Target = [X(:),Y(:)];           <span class="comment">%   | x_1 , y_1 |   En est
 T_np = size(Target,1);          <span class="comment">% Numero de particulas en el objetivo</span>
 </pre><h2>Asignacion de defectos puntuales en Objetivo<a name="3"></a></h2><p>Constantes para asginacion de fallas en basalto</p><pre class="codeinput">m = 3;
 k = 7;
-V = dx*dy*1;    <span class="comment">% Volumen infinitesimal</span>
+V = T_dx*T_dy*1;    <span class="comment">% Volumen infinitesimal</span>
 
 Nflaws = T_np*log(T_np);        <span class="comment">% Numero de defectos puntuales a asignar</span>
 Nflaws = round(Nflaws);
 assign_flaws = randi(T_np,Nflaws,1,<span class="string">'uint32'</span>); <span class="comment">% [Nflaws x 1]</span>
                                 <span class="comment">%  Nflaws numeros aleatorios entre 1 y T_np</span>
-[Flaws{1:T_np,1}] = deal([]);     <span class="comment">%  Flaws [cell array] {T_np x 1}</span>
+[Flaws{1:T_np,1}] = deal([]);   <span class="comment">%  Flaws [cell array] {T_np x 1}</span>
                                 <span class="comment">%  Cell array con ''T_np matrices vacias</span>
                                 <span class="comment">%  Cell de pre-alocacion para fallas</span>
 
@@ -98,7 +99,92 @@ assign_flaws = randi(T_np,Nflaws,1,<span class="string">'uint32'</span>); <span 
     Flaws{assign_flaws(i),1}(size(Flaws{assign_flaws(i),1})+1) = <span class="keyword">...</span>
         (i/(k*V))^(1/m);
 <span class="keyword">end</span>
-</pre><p><b>assign_flaws</b>   [Nflaws x 1]    vector que contiene <i>Nflaws</i> posiciones de las fallas a generar. Las posiciones estan dadas como numeros enteros en relacion al numero de cada particula.</p><p><b>Flaws</b>       cell{T_np x 1}    Contiene <i>T_np</i> matrices vacias que identifican las fallas para cada particula. <b>Flaws</b> se va llenando de forma aleatoria con las posiciones que indica <i>assing_flaws</i>. La primera vez que se pasa por una amtriz de Flaws, le asigna el numero (i/(k*V))^(1/m) formando una matriz 1x1. La segunda vez que se pasa por la misma matriz, aumenta la dimension de la matriz en una sola direccion para asignar otro numero. Asi, si semi-aleatoriamente, el numero <i>k</i> aparecio <i>n</i> veces de <i>assign_flaws</i>, la celda <i>Flaws</i> en su posicion <i>k</i> debe contener una matriz nx1 con numeros asignados. Los numeros asignados corresponden a las deformaciones de activacion para los defectos puntuales de cada particula</p><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2012b</a><br></p></div><!--
+</pre><p><b>assign_flaws</b>   [Nflaws x 1]    vector que contiene <i>Nflaws</i> posiciones de las fallas a generar. Las posiciones estan dadas como numeros enteros en relacion al numero de cada particula.</p><p><b>Flaws</b>       cell{T_np x 1}    Contiene <i>T_np</i> matrices vacias que identifican las fallas para cada particula. <b>Flaws</b> se va llenando de forma aleatoria con las posiciones que indica <i>assing_flaws</i>. La primera vez que se pasa por una amtriz de Flaws, le asigna el numero (i/(k*V))^(1/m) formando una matriz 1x1. La segunda vez que se pasa por la misma matriz, aumenta la dimension de la matriz en una sola direccion para asignar otro numero. Asi, si semi-aleatoriamente, el numero <i>k</i> aparecio <i>n</i> veces de <i>assign_flaws</i>, la celda <i>Flaws</i> en su posicion <i>k</i> debe contener una matriz nx1 con numeros asignados. Los numeros asignados corresponden a las deformaciones de activacion para los defectos puntuales de cada particula</p><h2>Constantes del Material Objetivo<a name="5"></a></h2><p>Todas las unidades estan en el sistema internacional de unidades</p><pre class="codeinput">T_r0 = 7850;            <span class="comment">%Densidad volumetrica del objetivo</span>
+T_m0 = T_dx*T_dy*T_r0;    <span class="comment">%Masa de una particula</span>
+
+<span class="comment">%Parametros de Huggoniot</span>
+ss = 4699;
+C = 3630;
+S = 1800;
+
+<span class="comment">%Parametros de XSPH</span>
+gamma = 1.81;
+alpha = 0.5;
+beta = 0.5;
+eta = 0.01;
+eps = 0.5;
+
+<span class="comment">%Parametros de Elasticidad</span>
+T_G = 8e10;         <span class="comment">% Modulo de cortante</span>
+T_Y0 = 6e8;         <span class="comment">% Esfuerzo de fluencia</span>
+T_E = ss^2*T_r0;    <span class="comment">% Modulo de Young</span>
+</pre><h2>Definir Geometria del Proyectil<a name="6"></a></h2><p>Se definen las posiciones de las particulas que conforman el proyectil.</p><p>Se asume que el proyectil se mueve en la direccion horizontal.</p><p>Proyectil rectangular</p><pre class="codeinput"><span class="comment">%{
+</span><span class="comment">s_x = 4e-4;             % Separacion en x entre proyectil y objetivo
+</span><span class="comment">B_width = T_width/5;    % Ancho del proyectil
+</span><span class="comment">B_height = T_height/5;  % Alto del proyectil
+</span><span class="comment">B_x0 = min(Target(:,1))-B_width-s_x;
+</span><span class="comment">B_y0 = mean(Target(:,2)); % Posiciones de referencia para el objetivo
+</span><span class="comment">B_dx = T_dx;            % Separacion entre particulas del proyectil
+</span><span class="comment">B_dy = B_dx;
+</span><span class="comment">
+</span><span class="comment">B_x = [-B_width : B_dx : B_width] + B_x0;
+</span><span class="comment">B_y = [-B_height : B_dy : B_height] + B_y0;
+</span><span class="comment">[X,Y] = meshgrid(B_x,B_y);  % Matrices con la malla para las posiciones
+</span><span class="comment">                            % de la particulas en el proyectil
+</span><span class="comment">Bullet = [X(:),Y(:)];       % Posicion de las particulas en el pryectil
+</span><span class="comment">B_np = size(Bullet,1);      % Numero de particulas en el proyectil
+</span><span class="comment">%}</span>
+</pre><p>Proyectil redondo</p><pre class="codeinput">s_x = 4e-4;         <span class="comment">% separacion en x entre proyectil y objetivo</span>
+B_dr = T_dx;        <span class="comment">% Variacion en el radio del proyectil</span>
+B_rmax = T_height/5;  <span class="comment">% Radio maximo del proyectil</span>
+B_r = B_dr:B_dr:B_rmax; <span class="comment">% Valores del radio en el proyectil</span>
+n_theta = 18*2;         <span class="comment">% Numero de puntos a considerar en el angulo</span>
+B_theta = linspace(0,2*pi,n_theta); <span class="comment">% Valores del angulo</span>
+B_cx = min(Target(:,1)) - B_rmax - s_x; <span class="comment">% Centro del proyectil</span>
+B_cy = mean(Target(:,2));
+B_np = length(B_r)*length(B_theta); <span class="comment">%Numero de particulas en el proyectil</span>
+Bullet = zeros(B_np,2); <span class="comment">% Posiciones x,y de las particulas en el proyectil</span>
+<span class="keyword">for</span> i = 1:length(B_r)
+    <span class="keyword">for</span> j = 1:length(B_theta)
+        Bullet((i-1)*n_theta+j,:) = [B_r(i)*cos(B_theta(j))+B_cx,<span class="keyword">...</span>
+            B_r(i)*sin(B_theta(j))+B_cy];
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre><h2>Representacion de condiciones iniciales<a name="8"></a></h2><pre class="codeinput">figure(1)
+plot(Target(:,1),Target(:,2),Bullet(:,1),Bullet(:,2),<span class="keyword">...</span>
+    <span class="string">'Marker'</span>, <span class="string">'.'</span>, <span class="string">'LineStyle'</span>,<span class="string">'none'</span>)
+title(<span class="string">'Configuracion Inicial'</span>)
+xlabel(<span class="string">'X'</span>); ylabel(<span class="string">'Y'</span>); axis(<span class="string">'equal'</span>)
+</pre><img vspace="5" hspace="5" src="Bullet_Impact_01.png" alt=""> <h2>Alocacion de Matrices Requeridas para calculos<a name="9"></a></h2><pre class="codeinput">N_part = T_np + B_np; <span class="comment">% Numero total de particulas</span>
+
+V1 = zeros(N_part,1);   <span class="comment">% Velocidad en la direccion 1</span>
+V2 = zeros(N_part,1);
+dV1 = zeros(N_part,1);  <span class="comment">% Derivada total de V1</span>
+dV2 = zeros(N_part,1);
+    dv1dx1 = zeros(N_part,1);
+    dv1dx2 = zeros(N_part,1);   <span class="comment">% Derivada de V1 en direccion 2</span>
+    dv2dx1 = zeros(N_part,1);
+    dv2dx2 = zeros(N_part,1);
+P = zeros(N_part,1);    <span class="comment">% Presion Hidrostatica</span>
+
+Tau11 = zeros(N_part,1);
+Tau12 = zeros(N_part,1);    <span class="comment">% Esfuerzos en cara 1 con direccion 2</span>
+Tau21 = zeros(N_part,1);
+Tau22 = zeros(N_part,1);
+
+eps11 = zeros(N_part,1);
+eps12 = zeros(N_part,1);    <span class="comment">% Deformacion unitaria en cara 1 con dir 2</span>
+eps21 = zeros(N_part,1);
+eps22 = zeros(N_part,1);
+
+E_int = zeros(N_part,1);        <span class="comment">% Energia Interna</span>
+    dE_int = zeros(N_part,1);   <span class="comment">% Derivada de Energia Interna</span>
+</pre><h2>Matrices para revisar<a name="10"></a></h2><p>Hay que revisar esta matrices porque las propiedades deben inicializarse de acuerdo al <i>tipo de las particulas</i>, es decir que se deben asignar propiedades diferentes a las particulas del <b>objetivo</b> y a las particulas del <b>proyectil</b></p><pre class="codeinput">M = ones(N_part,1)*V*T_r0;  <span class="comment">% Masa</span>
+cs = ones(N_part,1)*ss;     <span class="comment">% Velocidad del sonido</span>
+Rho = ones(N_part,1)*T_r0;  <span class="comment">% Densidad</span>
+    dRho = zeros(N_part,1); <span class="comment">% Derivada de la densidad</span>
+D = zeros(N_part,1);        <span class="comment">% Damage</span>
+</pre><h2>Pruebas de formato<a name="11"></a></h2><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% Bullet_Impact
 %
@@ -110,25 +196,33 @@ assign_flaws = randi(T_np,Nflaws,1,<span class="string">'uint32'</span>); <span 
 %
 % Author: *J. Camilo Alfonso R.*
 %
-% *Problema Especial IMEC*
+% Codigo basado en rutinas de Ing. *Daniel Luna*
+%
+% Profesor Asesor: *Andres Gonzalez Mancera*
+%
+% _*Problema Especial IMEC*_
 %
 % Simulacion de impacto entre proyectil ductil y objetivo fragil
 %
+% Disponible en repositorio publico <https://github.com/JC-AlfonsoR/SPH.git SPH>
+%
 % _Se omiten tildes para evitar problemas de compatibilidad en ecoding_
-clear all; clc;
+clear all; clc; close all;
 %% Definir Geometria del Objetivo
 % Todas las unidades son dadas en el sistema internacional de unidades
 %
+% Se define las posiciones de las particulas que conforman el objetivo
+%
 % Geometria del objetivo
-dy = 3e-4; %    Separacion entre particulas
-dx = dy;   %     
+T_dy = 3e-4; %    Separacion entre particulas
+T_dx = T_dy;   %     
 k = 2.0;   %    Constante para expandir radio de soporte
-h = k*dx;  %    Radio de soporte
+h = k*T_dx;  %    Radio de soporte
 
-T_width = 0.0076;               % Ancho del objetivo
+T_width = 0.0006;               % Ancho del objetivo
 T_height = 0.0076;              % Alto del objetivo
-T_x = -T_width : dx : T_width;
-T_y = -T_height : dy : T_height;
+T_x = -T_width : T_dx : T_width;
+T_y = -T_height : T_dy : T_height;
 [X,Y] = meshgrid(T_x, T_y);     % Matriz con la malla de las posiciones x,y para las particulas
 Target = [X(:),Y(:)];           %   | x_1 , y_1 |   En esta matriz organiza    
                                 %   | .   , .   |   todas las posiciones de las
@@ -141,13 +235,13 @@ T_np = size(Target,1);          % Numero de particulas en el objetivo
 % Constantes para asginacion de fallas en basalto
 m = 3;
 k = 7;
-V = dx*dy*1;    % Volumen infinitesimal
+V = T_dx*T_dy*1;    % Volumen infinitesimal
 
 Nflaws = T_np*log(T_np);        % Numero de defectos puntuales a asignar
 Nflaws = round(Nflaws);         
 assign_flaws = randi(T_np,Nflaws,1,'uint32'); % [Nflaws x 1]
                                 %  Nflaws numeros aleatorios entre 1 y T_np
-[Flaws{1:T_np,1}] = deal([]);     %  Flaws [cell array] {T_np x 1}
+[Flaws{1:T_np,1}] = deal([]);   %  Flaws [cell array] {T_np x 1}
                                 %  Cell array con ''T_np matrices vacias
                                 %  Cell de pre-alocacion para fallas
                                 
@@ -171,6 +265,114 @@ end
 % debe contener una matriz nx1 con numeros asignados. Los numeros asignados
 % corresponden a las deformaciones de activacion para los defectos
 % puntuales de cada particula
+
+%% Constantes del Material Objetivo
+% Todas las unidades estan en el sistema internacional de unidades
+T_r0 = 7850;            %Densidad volumetrica del objetivo
+T_m0 = T_dx*T_dy*T_r0;    %Masa de una particula
+
+%Parametros de Huggoniot
+ss = 4699;
+C = 3630;
+S = 1800;
+
+%Parametros de XSPH
+gamma = 1.81;
+alpha = 0.5;
+beta = 0.5;
+eta = 0.01;
+eps = 0.5;
+
+%Parametros de Elasticidad
+T_G = 8e10;         % Modulo de cortante
+T_Y0 = 6e8;         % Esfuerzo de fluencia
+T_E = ss^2*T_r0;    % Modulo de Young
+
+%% Definir Geometria del Proyectil
+% Se definen las posiciones de las particulas que conforman el proyectil.
+%
+% Se asume que el proyectil se mueve en la direccion horizontal.
+%
+% Proyectil rectangular
+%{
+s_x = 4e-4;             % Separacion en x entre proyectil y objetivo
+B_width = T_width/5;    % Ancho del proyectil
+B_height = T_height/5;  % Alto del proyectil
+B_x0 = min(Target(:,1))-B_width-s_x;
+B_y0 = mean(Target(:,2)); % Posiciones de referencia para el objetivo
+B_dx = T_dx;            % Separacion entre particulas del proyectil
+B_dy = B_dx;
+
+B_x = [-B_width : B_dx : B_width] + B_x0;
+B_y = [-B_height : B_dy : B_height] + B_y0;
+[X,Y] = meshgrid(B_x,B_y);  % Matrices con la malla para las posiciones 
+                            % de la particulas en el proyectil
+Bullet = [X(:),Y(:)];       % Posicion de las particulas en el pryectil
+B_np = size(Bullet,1);      % Numero de particulas en el proyectil
+%}
+%%
+% Proyectil redondo
+s_x = 4e-4;         % separacion en x entre proyectil y objetivo
+B_dr = T_dx;        % Variacion en el radio del proyectil
+B_rmax = T_height/5;  % Radio maximo del proyectil
+B_r = B_dr:B_dr:B_rmax; % Valores del radio en el proyectil
+n_theta = 18*2;         % Numero de puntos a considerar en el angulo
+B_theta = linspace(0,2*pi,n_theta); % Valores del angulo
+B_cx = min(Target(:,1)) - B_rmax - s_x; % Centro del proyectil
+B_cy = mean(Target(:,2));
+B_np = length(B_r)*length(B_theta); %Numero de particulas en el proyectil
+Bullet = zeros(B_np,2); % Posiciones x,y de las particulas en el proyectil
+for i = 1:length(B_r)
+    for j = 1:length(B_theta)
+        Bullet((i-1)*n_theta+j,:) = [B_r(i)*cos(B_theta(j))+B_cx,...
+            B_r(i)*sin(B_theta(j))+B_cy];
+    end
+end
+
+%% Representacion de condiciones iniciales
+figure(1)
+plot(Target(:,1),Target(:,2),Bullet(:,1),Bullet(:,2),...
+    'Marker', '.', 'LineStyle','none')
+title('Configuracion Inicial')
+xlabel('X'); ylabel('Y'); axis('equal')
+%% Alocacion de Matrices Requeridas para calculos
+N_part = T_np + B_np; % Numero total de particulas
+
+V1 = zeros(N_part,1);   % Velocidad en la direccion 1
+V2 = zeros(N_part,1);   
+dV1 = zeros(N_part,1);  % Derivada total de V1
+dV2 = zeros(N_part,1);  
+    dv1dx1 = zeros(N_part,1); 
+    dv1dx2 = zeros(N_part,1);   % Derivada de V1 en direccion 2
+    dv2dx1 = zeros(N_part,1);
+    dv2dx2 = zeros(N_part,1);
+P = zeros(N_part,1);    % Presion Hidrostatica
+
+Tau11 = zeros(N_part,1);
+Tau12 = zeros(N_part,1);    % Esfuerzos en cara 1 con direccion 2
+Tau21 = zeros(N_part,1);
+Tau22 = zeros(N_part,1);
+
+eps11 = zeros(N_part,1);
+eps12 = zeros(N_part,1);    % Deformacion unitaria en cara 1 con dir 2
+eps21 = zeros(N_part,1);
+eps22 = zeros(N_part,1);
+
+E_int = zeros(N_part,1);        % Energia Interna
+    dE_int = zeros(N_part,1);   % Derivada de Energia Interna
+
+%% Matrices para revisar
+% Hay que revisar esta matrices porque las propiedades deben inicializarse
+% de acuerdo al _tipo de las particulas_, es decir que se deben asignar
+% propiedades diferentes a las particulas del *objetivo* y a las particulas
+% del *proyectil*
+M = ones(N_part,1)*V*T_r0;  % Masa
+cs = ones(N_part,1)*ss;     % Velocidad del sonido
+Rho = ones(N_part,1)*T_r0;  % Densidad
+    dRho = zeros(N_part,1); % Derivada de la densidad
+D = zeros(N_part,1);        % Damage
+
+%% Pruebas de formato
 
 ##### SOURCE END #####
 --></body></html>
