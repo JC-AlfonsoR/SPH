@@ -16,6 +16,8 @@
 %
 % Simulacion de impacto entre proyectil ductil y objetivo fragil
 %
+% Disponible en repositorio publico <https://github.com/JC-AlfonsoR/SPH.git SPH>
+%
 % _Se omiten tildes para evitar problemas de compatibilidad en ecoding_
 clear all; clc; close all;
 %% Definir Geometria del Objetivo
@@ -29,7 +31,7 @@ T_dx = T_dy;   %
 k = 2.0;   %    Constante para expandir radio de soporte
 h = k*T_dx;  %    Radio de soporte
 
-T_width = 0.0006;               % Ancho del objetivo
+T_width = 0.0016;               % Ancho del objetivo
 T_height = 0.0076;              % Alto del objetivo
 T_x = -T_width : T_dx : T_width;
 T_y = -T_height : T_dy : T_height;
@@ -148,6 +150,7 @@ xlabel('X'); ylabel('Y'); axis('equal')
 %% Alocacion de Matrices Requeridas para calculos
 N_part = T_np + B_np; % Numero total de particulas
 
+Particles = [Target;Bullet];    % Posiciones de particulas
 V1 = zeros(N_part,1);   % Velocidad en la direccion 1
 V2 = zeros(N_part,1);   
 dV1 = zeros(N_part,1);  % Derivada total de V1
@@ -172,12 +175,81 @@ E_int = zeros(N_part,1);        % Energia Interna
     dE_int = zeros(N_part,1);   % Derivada de Energia Interna
 
 %% Matrices para revisar
-% Hay que revisar esta matrices porque las
-%
-%
-%
+% Hay que revisar esta matrices porque las propiedades deben inicializarse
+% de acuerdo al _tipo de las particulas_, es decir que se deben asignar
+% propiedades diferentes a las particulas del *objetivo* y a las particulas
+% del *proyectil*
 M = ones(N_part,1)*V*T_r0;  % Masa
-cs = ones(N_part,1)*T_r0;   % Velocidad del sonido
+cs = ones(N_part,1)*ss;     % Velocidad del sonido
 Rho = ones(N_part,1)*T_r0;  % Densidad
     dRho = zeros(N_part,1); % Derivada de la densidad
 D = zeros(N_part,1);        % Damage
+
+%% Inicio de Simulacion
+% 
+display('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+display('   Inicio de la simulacion')
+display('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+
+t = 0;  %Tiempo Inicial
+dt = max(h/cs); % Paso de tiempo
+                % El paso de tiempo se define de esta forma para que la
+                % simulacion sea capaz de detectar el fenomeno mas rapido
+                % al que sea sensible el problema
+                % La definicion correcta es 
+                % min(h/cs)
+                % pero lo ejecuta con max para que dt sea diferente de 0 y
+                % la simulacion no sea muy larga
+tf = 1e-6*20; % Tiempo final
+steps = round(tf/dt);  % Numero de pasos
+
+%%
+% Matrices para guardar informacion de la simulacion
+n_m = round(20/100*steps);     % Numero de datos para muestreo
+
+Coordenadas = zeros(N_part,n_m);
+Velocidad1 = zeros(N_part,n_m);
+Velocidad2 = zeros(N_part,n_m);
+Presion = zeros(N_part,n_m);
+Esfuerzos11 = zeros(N_part,n_m);
+Esfuerzos12 = zeros(N_part,n_m);
+Esfuerzos21 = zeros(N_part,n_m);
+Esfuerzos22 = zeros(N_part,n_m);
+Densidad = zeros(N_part,n_m);
+
+%% Recorrido principal en el tiempo
+fprintf('Numero de Pasos = %d\n',steps)
+for ti = 1:steps
+    %fprintf('%d..',ti);
+    
+    %%
+    % Busqueda de Vecinos
+    %
+    % *Nearpart*        cell {N_part x 1}:
+    % En el compartimiento _i_ de *Nearpart*, se encuentra un vector [1 x n] 
+    % que contiene los indices de las n particulas vecinas a la particula
+    % de identidad _i_.
+    %
+    % *Dist*        cell {Npart x 1}:
+    % En el compartimiento _i_ de *Dist*, se encuentra un vector [1 x n] que 
+    % contiene la distancia _r_n_ a la que se encuentra cada una de las
+    % _n_ particulas vecinas de la particula _i_.
+    [Nearpart,Dist] = rangesearch(Particles,Particles,h);
+    
+    %%
+    % Se genera el _cell_ para el kernel *kern*. Este cell tiene las mismas
+    % dimensiones que el cell _Dist_, con la diferencia que todos los
+    % valores son _0_
+    kern = cellfun(@(x) x*0, Dist, 'un', 0);
+        dkernx = kern;  %Inicializar en 0 las derivadas del kernel
+        dkerny = kern;
+    
+    % Usando las funciones kern1, dkernx1 y dkerny1 se calcula el kernel
+    % y las derivadas x-y evaluadas en las particulas vecinas de cada una
+    % de las particulas del dominio.
+    for i = 1:N_part
+        kern{i} = kern1(Dist{i},h);
+        dkernx{i} = dkernx1(Dist{i}, h, Particles, Nearpart{i}, i);
+        dkerny{i} = dkerny1(Dist{i}, h, Particles, Nearpart{i}, i);
+    end
+end

@@ -66,13 +66,13 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Bullet_Impact</a></li><li><a href="#2">Definir Geometria del Objetivo</a></li><li><a href="#3">Asignacion de defectos puntuales en Objetivo</a></li><li><a href="#5">Constantes del Material Objetivo</a></li><li><a href="#6">Definir Geometria del Proyectil</a></li><li><a href="#8">Representacion de condiciones iniciales</a></li><li><a href="#9">Alocacion de Matrices Requeridas para calculos</a></li><li><a href="#10">Matrices para revisar</a></li><li><a href="#11">Pruebas de formato</a></li></ul></div><h2>Bullet_Impact<a name="1"></a></h2><p>Simulacion de impacto</p><p>Version 1</p><p>Marzo 18 - 2015</p><p>Author: <b>J. Camilo Alfonso R.</b></p><p>Codigo basado en rutinas de Ing. <b>Daniel Luna</b></p><p>Profesor Asesor: <b>Andres Gonzalez Mancera</b></p><p><i><b>Problema Especial IMEC</b></i></p><p>Simulacion de impacto entre proyectil ductil y objetivo fragil</p><p>Disponible en repositorio publico <a href="https://github.com/JC-AlfonsoR/SPH.git">SPH</a></p><p><i>Se omiten tildes para evitar problemas de compatibilidad en ecoding</i></p><pre class="codeinput">clear <span class="string">all</span>; clc; close <span class="string">all</span>;
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Bullet_Impact</a></li><li><a href="#2">Definir Geometria del Objetivo</a></li><li><a href="#3">Asignacion de defectos puntuales en Objetivo</a></li><li><a href="#5">Constantes del Material Objetivo</a></li><li><a href="#6">Definir Geometria del Proyectil</a></li><li><a href="#8">Representacion de condiciones iniciales</a></li><li><a href="#9">Alocacion de Matrices Requeridas para calculos</a></li><li><a href="#10">Matrices para revisar</a></li><li><a href="#11">Inicio de Simulacion</a></li><li><a href="#13">Recorrido principal en el tiempo</a></li></ul></div><h2>Bullet_Impact<a name="1"></a></h2><p>Simulacion de impacto</p><p>Version 1</p><p>Marzo 18 - 2015</p><p>Author: <b>J. Camilo Alfonso R.</b></p><p>Codigo basado en rutinas de Ing. <b>Daniel Luna</b></p><p>Profesor Asesor: <b>Andres Gonzalez Mancera</b></p><p><i><b>Problema Especial IMEC</b></i></p><p>Simulacion de impacto entre proyectil ductil y objetivo fragil</p><p>Disponible en repositorio publico <a href="https://github.com/JC-AlfonsoR/SPH.git">SPH</a></p><p><i>Se omiten tildes para evitar problemas de compatibilidad en ecoding</i></p><pre class="codeinput">clear <span class="string">all</span>; clc; close <span class="string">all</span>;
 </pre><h2>Definir Geometria del Objetivo<a name="2"></a></h2><p>Todas las unidades son dadas en el sistema internacional de unidades</p><p>Se define las posiciones de las particulas que conforman el objetivo</p><p>Geometria del objetivo</p><pre class="codeinput">T_dy = 3e-4; <span class="comment">%    Separacion entre particulas</span>
 T_dx = T_dy;   <span class="comment">%</span>
 k = 2.0;   <span class="comment">%    Constante para expandir radio de soporte</span>
 h = k*T_dx;  <span class="comment">%    Radio de soporte</span>
 
-T_width = 0.0006;               <span class="comment">% Ancho del objetivo</span>
+T_width = 0.0016;               <span class="comment">% Ancho del objetivo</span>
 T_height = 0.0076;              <span class="comment">% Alto del objetivo</span>
 T_x = -T_width : T_dx : T_width;
 T_y = -T_height : T_dy : T_height;
@@ -157,6 +157,7 @@ title(<span class="string">'Configuracion Inicial'</span>)
 xlabel(<span class="string">'X'</span>); ylabel(<span class="string">'Y'</span>); axis(<span class="string">'equal'</span>)
 </pre><img vspace="5" hspace="5" src="Bullet_Impact_01.png" alt=""> <h2>Alocacion de Matrices Requeridas para calculos<a name="9"></a></h2><pre class="codeinput">N_part = T_np + B_np; <span class="comment">% Numero total de particulas</span>
 
+Particles = [Target;Bullet];    <span class="comment">% Posiciones de particulas</span>
 V1 = zeros(N_part,1);   <span class="comment">% Velocidad en la direccion 1</span>
 V2 = zeros(N_part,1);
 dV1 = zeros(N_part,1);  <span class="comment">% Derivada total de V1</span>
@@ -184,7 +185,45 @@ cs = ones(N_part,1)*ss;     <span class="comment">% Velocidad del sonido</span>
 Rho = ones(N_part,1)*T_r0;  <span class="comment">% Densidad</span>
     dRho = zeros(N_part,1); <span class="comment">% Derivada de la densidad</span>
 D = zeros(N_part,1);        <span class="comment">% Damage</span>
-</pre><h2>Pruebas de formato<a name="11"></a></h2><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014a</a><br></p></div><!--
+</pre><h2>Inicio de Simulacion<a name="11"></a></h2><pre class="codeinput">display(<span class="string">'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'</span>);
+display(<span class="string">'   Inicio de la simulacion'</span>)
+display(<span class="string">'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'</span>)
+
+t = 0;  <span class="comment">%Tiempo Inicial</span>
+dt = max(h/cs); <span class="comment">% Paso de tiempo</span>
+                <span class="comment">% El paso de tiempo se define de esta forma para que la</span>
+                <span class="comment">% simulacion sea capaz de detectar el fenomeno mas rapido</span>
+                <span class="comment">% al que sea sensible el problema</span>
+                <span class="comment">% La definicion correcta es</span>
+                <span class="comment">% min(h/cs)</span>
+                <span class="comment">% pero lo ejecuta con max para que dt sea diferente de 0 y</span>
+                <span class="comment">% la simulacion no sea muy larga</span>
+tf = 1e-6*20; <span class="comment">% Tiempo final</span>
+steps = round(tf/dt);  <span class="comment">% Numero de pasos</span>
+</pre><pre class="codeoutput">~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   Inicio de la simulacion
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+</pre><p>Matrices para guardar informacion de la simulacion</p><pre class="codeinput">n_m = round(20/100*steps);     <span class="comment">% Numero de datos para muestreo</span>
+
+Coordenadas = zeros(N_part,n_m);
+Velocidad1 = zeros(N_part,n_m);
+Velocidad2 = zeros(N_part,n_m);
+Presion = zeros(N_part,n_m);
+Esfuerzos11 = zeros(N_part,n_m);
+Esfuerzos12 = zeros(N_part,n_m);
+Esfuerzos21 = zeros(N_part,n_m);
+Esfuerzos22 = zeros(N_part,n_m);
+Densidad = zeros(N_part,n_m);
+</pre><h2>Recorrido principal en el tiempo<a name="13"></a></h2><pre class="codeinput">fprintf(<span class="string">'Numero de Pasos = %d\n'</span>,steps)
+<span class="keyword">for</span> ti = 1:steps
+</pre><pre class="codeinput">    <span class="comment">%fprintf('%d..',ti);</span>
+</pre><p>Busqueda de Vecinos</p><p><b>Nearpart</b>        cell {N_part x 1}: En el compartimiento <i>i</i> de <b>Nearpart</b>, se encuentra un vector [1 x n] que contiene los indices de las n particulas vecinas a la particula de identidad <i>i</i>.</p><p><b>Dist</b>        cell {Npart x 1}: En el compartimiento <i>i</i> de <b>Dist</b>, se encuentra un vector [1 x n] que contiene la distancia <i>r_n</i> a la que se encuentra cada una de las <i>n</i> particulas vecinas de la particula <i>i</i>.</p><pre class="codeinput">    [Nearpart,Dist] = rangesearch(Particles,Particles,h);
+</pre><p>Se genera el <i>cell</i> para el kernel <b>kern</b>. Este cell tiene las mismas dimensiones que el cell <i>Dist</i>, con la diferencia que todos los valores son <i>0</i></p><pre class="codeinput">    kern = cellfun(@(x) x*0, Dist, <span class="string">'un'</span>, 0);
+        dkernx = kern;  <span class="comment">%Inicializar en 0 las derivadas del kernel</span>
+        dkerny = kern;
+</pre><pre class="codeinput"><span class="keyword">end</span>
+</pre><pre class="codeoutput">Numero de Pasos = 157
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% Bullet_Impact
 %
@@ -219,7 +258,7 @@ T_dx = T_dy;   %
 k = 2.0;   %    Constante para expandir radio de soporte
 h = k*T_dx;  %    Radio de soporte
 
-T_width = 0.0006;               % Ancho del objetivo
+T_width = 0.0016;               % Ancho del objetivo
 T_height = 0.0076;              % Alto del objetivo
 T_x = -T_width : T_dx : T_width;
 T_y = -T_height : T_dy : T_height;
@@ -338,6 +377,7 @@ xlabel('X'); ylabel('Y'); axis('equal')
 %% Alocacion de Matrices Requeridas para calculos
 N_part = T_np + B_np; % Numero total de particulas
 
+Particles = [Target;Bullet];    % Posiciones de particulas
 V1 = zeros(N_part,1);   % Velocidad en la direccion 1
 V2 = zeros(N_part,1);   
 dV1 = zeros(N_part,1);  % Derivada total de V1
@@ -372,7 +412,64 @@ Rho = ones(N_part,1)*T_r0;  % Densidad
     dRho = zeros(N_part,1); % Derivada de la densidad
 D = zeros(N_part,1);        % Damage
 
-%% Pruebas de formato
+%% Inicio de Simulacion
+% 
+display('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+display('   Inicio de la simulacion')
+display('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
 
+t = 0;  %Tiempo Inicial
+dt = max(h/cs); % Paso de tiempo
+                % El paso de tiempo se define de esta forma para que la
+                % simulacion sea capaz de detectar el fenomeno mas rapido
+                % al que sea sensible el problema
+                % La definicion correcta es 
+                % min(h/cs)
+                % pero lo ejecuta con max para que dt sea diferente de 0 y
+                % la simulacion no sea muy larga
+tf = 1e-6*20; % Tiempo final
+steps = round(tf/dt);  % Numero de pasos
+
+%%
+% Matrices para guardar informacion de la simulacion
+n_m = round(20/100*steps);     % Numero de datos para muestreo
+
+Coordenadas = zeros(N_part,n_m);
+Velocidad1 = zeros(N_part,n_m);
+Velocidad2 = zeros(N_part,n_m);
+Presion = zeros(N_part,n_m);
+Esfuerzos11 = zeros(N_part,n_m);
+Esfuerzos12 = zeros(N_part,n_m);
+Esfuerzos21 = zeros(N_part,n_m);
+Esfuerzos22 = zeros(N_part,n_m);
+Densidad = zeros(N_part,n_m);
+
+%% Recorrido principal en el tiempo
+fprintf('Numero de Pasos = %d\n',steps)
+for ti = 1:steps
+    %fprintf('%d..',ti);
+    
+    %%
+    % Busqueda de Vecinos
+    %
+    % *Nearpart*        cell {N_part x 1}:
+    % En el compartimiento _i_ de *Nearpart*, se encuentra un vector [1 x n] 
+    % que contiene los indices de las n particulas vecinas a la particula
+    % de identidad _i_.
+    %
+    % *Dist*        cell {Npart x 1}:
+    % En el compartimiento _i_ de *Dist*, se encuentra un vector [1 x n] que 
+    % contiene la distancia _r_n_ a la que se encuentra cada una de las
+    % _n_ particulas vecinas de la particula _i_.
+    [Nearpart,Dist] = rangesearch(Particles,Particles,h);
+    
+    %%
+    % Se genera el _cell_ para el kernel *kern*. Este cell tiene las mismas
+    % dimensiones que el cell _Dist_, con la diferencia que todos los
+    % valores son _0_
+    kern = cellfun(@(x) x*0, Dist, 'un', 0);
+        dkernx = kern;  %Inicializar en 0 las derivadas del kernel
+        dkerny = kern;
+end
 ##### SOURCE END #####
 --></body></html>
