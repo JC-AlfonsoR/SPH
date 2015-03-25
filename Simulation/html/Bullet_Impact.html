@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Bullet_Impact</title><meta name="generator" content="MATLAB 8.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2015-03-18"><meta name="DC.source" content="Bullet_Impact.m"><style type="text/css">
+      --><title>Bullet_Impact</title><meta name="generator" content="MATLAB 8.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2015-03-24"><meta name="DC.source" content="Bullet_Impact.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,7 +66,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Bullet_Impact</a></li><li><a href="#2">Definir Geometria del Objetivo</a></li><li><a href="#3">Asignacion de defectos puntuales en Objetivo</a></li><li><a href="#5">Constantes del Material Objetivo</a></li><li><a href="#6">Definir Geometria del Proyectil</a></li><li><a href="#8">Representacion de condiciones iniciales</a></li><li><a href="#9">Alocacion de Matrices Requeridas para calculos</a></li><li><a href="#10">Matrices para revisar</a></li><li><a href="#11">Inicio de Simulacion</a></li><li><a href="#13">Recorrido principal en el tiempo</a></li></ul></div><h2>Bullet_Impact<a name="1"></a></h2><p>Simulacion de impacto</p><p>Version 1</p><p>Marzo 18 - 2015</p><p>Author: <b>J. Camilo Alfonso R.</b></p><p>Codigo basado en rutinas de Ing. <b>Daniel Luna</b></p><p>Profesor Asesor: <b>Andres Gonzalez Mancera</b></p><p><i><b>Problema Especial IMEC</b></i></p><p>Simulacion de impacto entre proyectil ductil y objetivo fragil</p><p>Disponible en repositorio publico <a href="https://github.com/JC-AlfonsoR/SPH.git">SPH</a></p><p><i>Se omiten tildes para evitar problemas de compatibilidad en ecoding</i></p><pre class="codeinput">clear <span class="string">all</span>; clc; close <span class="string">all</span>;
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Bullet_Impact</a></li><li><a href="#2">Definir Geometria del Objetivo</a></li><li><a href="#3">Asignacion de defectos puntuales en Objetivo</a></li><li><a href="#5">Constantes del Material Objetivo</a></li><li><a href="#6">Definir Geometria del Proyectil</a></li><li><a href="#7">Constantes del Material Proyectil</a></li><li><a href="#9">Representacion de condiciones iniciales</a></li><li><a href="#10">Alocacion de Matrices Requeridas para calculos</a></li><li><a href="#11">Matrices para revisar</a></li><li><a href="#12">Inicio de Simulacion</a></li><li><a href="#14">Recorrido principal en el tiempo</a></li></ul></div><h2>Bullet_Impact<a name="1"></a></h2><p>Simulacion de impacto</p><p>Version 1</p><p>Marzo 18 - 2015</p><p>Author: <b>J. Camilo Alfonso R.</b></p><p>Codigo basado en rutinas de Ing. <b>Daniel Luna</b></p><p>Profesor Asesor: <b>Andres Gonzalez Mancera</b></p><p><i><b>Problema Especial IMEC</b></i></p><p>Simulacion de impacto entre proyectil ductil y objetivo fragil</p><p>Disponible en repositorio publico <a href="https://github.com/JC-AlfonsoR/SPH.git">SPH</a></p><p><i>Se omiten tildes para evitar problemas de compatibilidad en ecoding</i></p><pre class="codeinput">clear <span class="string">all</span>; clc; close <span class="string">all</span>;
 </pre><h2>Definir Geometria del Objetivo<a name="2"></a></h2><p>Todas las unidades son dadas en el sistema internacional de unidades</p><p>Se define las posiciones de las particulas que conforman el objetivo</p><p>Geometria del objetivo</p><pre class="codeinput">T_dy = 3e-4; <span class="comment">%    Separacion entre particulas</span>
 T_dx = T_dy;   <span class="comment">%</span>
 k = 2.0;   <span class="comment">%    Constante para expandir radio de soporte</span>
@@ -99,25 +99,25 @@ assign_flaws = randi(T_np,Nflaws,1,<span class="string">'uint32'</span>); <span 
     Flaws{assign_flaws(i),1}(size(Flaws{assign_flaws(i),1})+1) = <span class="keyword">...</span>
         (i/(k*V))^(1/m);
 <span class="keyword">end</span>
-</pre><p><b>assign_flaws</b>   [Nflaws x 1]    vector que contiene <i>Nflaws</i> posiciones de las fallas a generar. Las posiciones estan dadas como numeros enteros en relacion al numero de cada particula.</p><p><b>Flaws</b>       cell{T_np x 1}    Contiene <i>T_np</i> matrices vacias que identifican las fallas para cada particula. <b>Flaws</b> se va llenando de forma aleatoria con las posiciones que indica <i>assing_flaws</i>. La primera vez que se pasa por una amtriz de Flaws, le asigna el numero (i/(k*V))^(1/m) formando una matriz 1x1. La segunda vez que se pasa por la misma matriz, aumenta la dimension de la matriz en una sola direccion para asignar otro numero. Asi, si semi-aleatoriamente, el numero <i>k</i> aparecio <i>n</i> veces de <i>assign_flaws</i>, la celda <i>Flaws</i> en su posicion <i>k</i> debe contener una matriz nx1 con numeros asignados. Los numeros asignados corresponden a las deformaciones de activacion para los defectos puntuales de cada particula</p><h2>Constantes del Material Objetivo<a name="5"></a></h2><p>Todas las unidades estan en el sistema internacional de unidades</p><pre class="codeinput">T_r0 = 7850;            <span class="comment">%Densidad volumetrica del objetivo</span>
-T_m0 = T_dx*T_dy*T_r0;    <span class="comment">%Masa de una particula</span>
+</pre><p><b>assign_flaws</b>   [Nflaws x 1]    vector que contiene <i>Nflaws</i> posiciones de las fallas a generar. Las posiciones estan dadas como numeros enteros en relacion al numero de cada particula.</p><p><b>Flaws</b>       cell{T_np x 1}    Contiene <i>T_np</i> matrices vacias que identifican las fallas para cada particula. <b>Flaws</b> se va llenando de forma aleatoria con las posiciones que indica <i>assing_flaws</i>. La primera vez que se pasa por una amtriz de Flaws, le asigna el numero (i/(k*V))^(1/m) formando una matriz 1x1. La segunda vez que se pasa por la misma matriz, aumenta la dimension de la matriz en una sola direccion para asignar otro numero. Asi, si semi-aleatoriamente, el numero <i>k</i> aparecio <i>n</i> veces de <i>assign_flaws</i>, la celda <i>Flaws</i> en su posicion <i>k</i> debe contener una matriz nx1 con numeros asignados. Los numeros asignados corresponden a las deformaciones de activacion para los defectos puntuales de cada particula</p><h2>Constantes del Material Objetivo<a name="5"></a></h2><p>Todas las unidades estan en el sistema internacional de unidades</p><pre class="codeinput">T_rho = 7850;               <span class="comment">%Densidad volumetrica del objetivo</span>
+T_m0 = T_dx*T_dy*T_rho;     <span class="comment">%Masa de una particula</span>
 
 <span class="comment">%Parametros de Huggoniot</span>
-ss = 4699;
-C = 3630;
-S = 1800;
+T_ss = 4699;
+T_C = 3630;
+T_S = 1800;
 
 <span class="comment">%Parametros de XSPH</span>
-gamma = 1.81;
-alpha = 0.5;
-beta = 0.5;
-eta = 0.01;
-eps = 0.5;
+T_gamma = 1.81;
+T_alpha = 0.5;
+T_beta = 0.5;
+T_eta = 0.01;
+T_eps = 0.5;
 
 <span class="comment">%Parametros de Elasticidad</span>
 T_G = 8e10;         <span class="comment">% Modulo de cortante</span>
 T_Y0 = 6e8;         <span class="comment">% Esfuerzo de fluencia</span>
-T_E = ss^2*T_r0;    <span class="comment">% Modulo de Young</span>
+T_E = T_ss^2*T_rho;   <span class="comment">% Modulo de Young</span>
 </pre><h2>Definir Geometria del Proyectil<a name="6"></a></h2><p>Se definen las posiciones de las particulas que conforman el proyectil.</p><p>Se asume que el proyectil se mueve en la direccion horizontal.</p><p>Proyectil rectangular</p><pre class="codeinput"><span class="comment">%{
 </span><span class="comment">s_x = 4e-4;             % Separacion en x entre proyectil y objetivo
 </span><span class="comment">B_width = T_width/5;    % Ancho del proyectil
@@ -134,6 +134,29 @@ T_E = ss^2*T_r0;    <span class="comment">% Modulo de Young</span>
 </span><span class="comment">Bullet = [X(:),Y(:)];       % Posicion de las particulas en el pryectil
 </span><span class="comment">B_np = size(Bullet,1);      % Numero de particulas en el proyectil
 </span><span class="comment">%}</span>
+</pre><h2>Constantes del Material Proyectil<a name="7"></a></h2><p>Por el momento estas magnitudes corresponden a las mismas del objetivo <b>*Consultar Propiedades para algun metal y reemplazaralas</b>*</p><pre class="codeinput">B_rho = 7850;               <span class="comment">%Densidad volumetrica del objetivo</span>
+B_m0 = pi*B_dr^2*B_rho;     <span class="comment">%Masa de una particula</span>
+
+<span class="comment">%Parametros de Huggoniot</span>
+B_ss = 4699;
+B_C = 3630;
+B_S = 1800;
+
+<span class="comment">%Parametros de XSPH</span>
+B_gamma = 1.81;
+B_alpha = 0.5;
+B_beta = 0.5;
+B_eta = 0.01;
+B_eps = 0.5;
+
+<span class="comment">%Parametros de Elasticidad</span>
+B_G = 8e10;             <span class="comment">% Modulo de cortante</span>
+B_Y0 = 6e8;             <span class="comment">% Esfuerzo de fluencia</span>
+B_E = T_ss^2*T_rho;     <span class="comment">% Modulo de Young</span>
+</pre><pre class="codeoutput error">Undefined function or variable 'B_dr'.
+
+Error in Bullet_Impact (line 129)
+B_m0 = pi*B_dr^2*B_rho;     %Masa de una particula
 </pre><p>Proyectil redondo</p><pre class="codeinput">s_x = 4e-4;         <span class="comment">% separacion en x entre proyectil y objetivo</span>
 B_dr = T_dx;        <span class="comment">% Variacion en el radio del proyectil</span>
 B_rmax = T_height/5;  <span class="comment">% Radio maximo del proyectil</span>
@@ -150,12 +173,12 @@ Bullet = zeros(B_np,2); <span class="comment">% Posiciones x,y de las particulas
             B_r(i)*sin(B_theta(j))+B_cy];
     <span class="keyword">end</span>
 <span class="keyword">end</span>
-</pre><h2>Representacion de condiciones iniciales<a name="8"></a></h2><pre class="codeinput">figure(1)
+</pre><h2>Representacion de condiciones iniciales<a name="9"></a></h2><pre class="codeinput">figure(1)
 plot(Target(:,1),Target(:,2),Bullet(:,1),Bullet(:,2),<span class="keyword">...</span>
     <span class="string">'Marker'</span>, <span class="string">'.'</span>, <span class="string">'LineStyle'</span>,<span class="string">'none'</span>)
 title(<span class="string">'Configuracion Inicial'</span>)
 xlabel(<span class="string">'X'</span>); ylabel(<span class="string">'Y'</span>); axis(<span class="string">'equal'</span>)
-</pre><img vspace="5" hspace="5" src="Bullet_Impact_01.png" alt=""> <h2>Alocacion de Matrices Requeridas para calculos<a name="9"></a></h2><pre class="codeinput">N_part = T_np + B_np; <span class="comment">% Numero total de particulas</span>
+</pre><h2>Alocacion de Matrices Requeridas para calculos<a name="10"></a></h2><pre class="codeinput">N_part = T_np + B_np; <span class="comment">% Numero total de particulas</span>
 
 Particles = [Target;Bullet];    <span class="comment">% Posiciones de particulas</span>
 V1 = zeros(N_part,1);   <span class="comment">% Velocidad en la direccion 1</span>
@@ -180,12 +203,12 @@ eps22 = zeros(N_part,1);
 
 E_int = zeros(N_part,1);        <span class="comment">% Energia Interna</span>
     dE_int = zeros(N_part,1);   <span class="comment">% Derivada de Energia Interna</span>
-</pre><h2>Matrices para revisar<a name="10"></a></h2><p>Hay que revisar esta matrices porque las propiedades deben inicializarse de acuerdo al <i>tipo de las particulas</i>, es decir que se deben asignar propiedades diferentes a las particulas del <b>objetivo</b> y a las particulas del <b>proyectil</b></p><pre class="codeinput">M = ones(N_part,1)*V*T_r0;  <span class="comment">% Masa</span>
-cs = ones(N_part,1)*ss;     <span class="comment">% Velocidad del sonido</span>
-Rho = ones(N_part,1)*T_r0;  <span class="comment">% Densidad</span>
+</pre><h2>Matrices para revisar<a name="11"></a></h2><p>Hay que revisar esta matrices porque las propiedades deben inicializarse de acuerdo al <i>tipo de las particulas</i>, es decir que se deben asignar propiedades diferentes a las particulas del <b>objetivo</b> y a las particulas del <b>proyectil</b></p><pre class="codeinput">M = ones(N_part,1)*V*T_rho;  <span class="comment">% Masa</span>
+cs = ones(N_part,1)*T_ss;     <span class="comment">% Velocidad del sonido</span>
+Rho = ones(N_part,1)*T_rho;  <span class="comment">% Densidad</span>
     dRho = zeros(N_part,1); <span class="comment">% Derivada de la densidad</span>
 D = zeros(N_part,1);        <span class="comment">% Damage</span>
-</pre><h2>Inicio de Simulacion<a name="11"></a></h2><pre class="codeinput">display(<span class="string">'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'</span>);
+</pre><h2>Inicio de Simulacion<a name="12"></a></h2><pre class="codeinput">display(<span class="string">'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'</span>);
 display(<span class="string">'   Inicio de la simulacion'</span>)
 display(<span class="string">'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'</span>)
 
@@ -200,9 +223,6 @@ dt = max(h/cs); <span class="comment">% Paso de tiempo</span>
                 <span class="comment">% la simulacion no sea muy larga</span>
 tf = 1e-6*20; <span class="comment">% Tiempo final</span>
 steps = round(tf/dt);  <span class="comment">% Numero de pasos</span>
-</pre><pre class="codeoutput">~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   Inicio de la simulacion
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 </pre><p>Matrices para guardar informacion de la simulacion</p><pre class="codeinput">n_m = round(20/100*steps);     <span class="comment">% Numero de datos para muestreo</span>
 
 Coordenadas = zeros(N_part,n_m);
@@ -214,15 +234,23 @@ Esfuerzos12 = zeros(N_part,n_m);
 Esfuerzos21 = zeros(N_part,n_m);
 Esfuerzos22 = zeros(N_part,n_m);
 Densidad = zeros(N_part,n_m);
-</pre><h2>Recorrido principal en el tiempo<a name="13"></a></h2><pre class="codeinput">fprintf(<span class="string">'Numero de Pasos = %d\n'</span>,steps)
+</pre><h2>Recorrido principal en el tiempo<a name="14"></a></h2><pre class="codeinput">fprintf(<span class="string">'Numero de Pasos = %d\n'</span>,steps)
 <span class="keyword">for</span> ti = 1:steps
 </pre><pre class="codeinput">    <span class="comment">%fprintf('%d..',ti);</span>
 </pre><p>Busqueda de Vecinos</p><p><b>Nearpart</b>        cell {N_part x 1}: En el compartimiento <i>i</i> de <b>Nearpart</b>, se encuentra un vector [1 x n] que contiene los indices de las n particulas vecinas a la particula de identidad <i>i</i>.</p><p><b>Dist</b>        cell {Npart x 1}: En el compartimiento <i>i</i> de <b>Dist</b>, se encuentra un vector [1 x n] que contiene la distancia <i>r_n</i> a la que se encuentra cada una de las <i>n</i> particulas vecinas de la particula <i>i</i>.</p><pre class="codeinput">    [Nearpart,Dist] = rangesearch(Particles,Particles,h);
 </pre><p>Se genera el <i>cell</i> para el kernel <b>kern</b>. Este cell tiene las mismas dimensiones que el cell <i>Dist</i>, con la diferencia que todos los valores son <i>0</i></p><pre class="codeinput">    kern = cellfun(@(x) x*0, Dist, <span class="string">'un'</span>, 0);
         dkernx = kern;  <span class="comment">%Inicializar en 0 las derivadas del kernel</span>
         dkerny = kern;
+
+    <span class="comment">% Usando las funciones kern1, dkernx1 y dkerny1 se calcula el kernel</span>
+    <span class="comment">% y las derivadas del kernel x-y evaluadas en las particulas vecinas</span>
+    <span class="comment">% de cada una de las particulas del dominio.</span>
+    <span class="keyword">for</span> i = 1:N_part
+        kern{i} = kern1(Dist{i},h);
+        dkernx{i} = dkernx1(Dist{i}, h, Particles, Nearpart{i}, i);
+        dkerny{i} = dkerny1(Dist{i}, h, Particles, Nearpart{i}, i);
+    <span class="keyword">end</span>
 </pre><pre class="codeinput"><span class="keyword">end</span>
-</pre><pre class="codeoutput">Numero de Pasos = 157
 </pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% Bullet_Impact
@@ -307,25 +335,25 @@ end
 
 %% Constantes del Material Objetivo
 % Todas las unidades estan en el sistema internacional de unidades
-T_r0 = 7850;            %Densidad volumetrica del objetivo
-T_m0 = T_dx*T_dy*T_r0;    %Masa de una particula
+T_rho = 7850;               %Densidad volumetrica del objetivo
+T_m0 = T_dx*T_dy*T_rho;     %Masa de una particula
 
 %Parametros de Huggoniot
-ss = 4699;
-C = 3630;
-S = 1800;
+T_ss = 4699;
+T_C = 3630;
+T_S = 1800;
 
 %Parametros de XSPH
-gamma = 1.81;
-alpha = 0.5;
-beta = 0.5;
-eta = 0.01;
-eps = 0.5;
+T_gamma = 1.81;
+T_alpha = 0.5;
+T_beta = 0.5;
+T_eta = 0.01;
+T_eps = 0.5;
 
 %Parametros de Elasticidad
 T_G = 8e10;         % Modulo de cortante
 T_Y0 = 6e8;         % Esfuerzo de fluencia
-T_E = ss^2*T_r0;    % Modulo de Young
+T_E = T_ss^2*T_rho;   % Modulo de Young
 
 %% Definir Geometria del Proyectil
 % Se definen las posiciones de las particulas que conforman el proyectil.
@@ -349,6 +377,30 @@ B_y = [-B_height : B_dy : B_height] + B_y0;
 Bullet = [X(:),Y(:)];       % Posicion de las particulas en el pryectil
 B_np = size(Bullet,1);      % Numero de particulas en el proyectil
 %}
+%% Constantes del Material Proyectil
+% Por el momento estas magnitudes corresponden a las mismas del objetivo
+% **Consultar Propiedades para algun metal y reemplazaralas**
+B_rho = 7850;               %Densidad volumetrica del objetivo
+B_m0 = pi*B_dr^2*B_rho;     %Masa de una particula
+
+%Parametros de Huggoniot
+B_ss = 4699;
+B_C = 3630;
+B_S = 1800;
+
+%Parametros de XSPH
+B_gamma = 1.81;
+B_alpha = 0.5;
+B_beta = 0.5;
+B_eta = 0.01;
+B_eps = 0.5;
+
+%Parametros de Elasticidad
+B_G = 8e10;             % Modulo de cortante
+B_Y0 = 6e8;             % Esfuerzo de fluencia
+B_E = T_ss^2*T_rho;     % Modulo de Young
+
+
 %%
 % Proyectil redondo
 s_x = 4e-4;         % separacion en x entre proyectil y objetivo
@@ -406,9 +458,9 @@ E_int = zeros(N_part,1);        % Energia Interna
 % de acuerdo al _tipo de las particulas_, es decir que se deben asignar
 % propiedades diferentes a las particulas del *objetivo* y a las particulas
 % del *proyectil*
-M = ones(N_part,1)*V*T_r0;  % Masa
-cs = ones(N_part,1)*ss;     % Velocidad del sonido
-Rho = ones(N_part,1)*T_r0;  % Densidad
+M = ones(N_part,1)*V*T_rho;  % Masa
+cs = ones(N_part,1)*T_ss;     % Velocidad del sonido
+Rho = ones(N_part,1)*T_rho;  % Densidad
     dRho = zeros(N_part,1); % Derivada de la densidad
 D = zeros(N_part,1);        % Damage
 
@@ -470,6 +522,16 @@ for ti = 1:steps
     kern = cellfun(@(x) x*0, Dist, 'un', 0);
         dkernx = kern;  %Inicializar en 0 las derivadas del kernel
         dkerny = kern;
+    
+    % Usando las funciones kern1, dkernx1 y dkerny1 se calcula el kernel
+    % y las derivadas del kernel x-y evaluadas en las particulas vecinas 
+    % de cada una de las particulas del dominio.
+    for i = 1:N_part
+        kern{i} = kern1(Dist{i},h);
+        dkernx{i} = dkernx1(Dist{i}, h, Particles, Nearpart{i}, i);
+        dkerny{i} = dkerny1(Dist{i}, h, Particles, Nearpart{i}, i);
+    end
+    
 end
 ##### SOURCE END #####
 --></body></html>

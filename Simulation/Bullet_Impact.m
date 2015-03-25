@@ -47,7 +47,7 @@ T_np = size(Target,1);          % Numero de particulas en el objetivo
 % Constantes para asginacion de fallas en basalto
 m = 3;
 k = 7;
-V = T_dx*T_dy*1;    % Volumen infinitesimal
+T_V = T_dx*T_dy*1;    % Volumen infinitesimal
 
 Nflaws = T_np*log(T_np);        % Numero de defectos puntuales a asignar
 Nflaws = round(Nflaws);         
@@ -59,7 +59,7 @@ assign_flaws = randi(T_np,Nflaws,1,'uint32'); % [Nflaws x 1]
                                 
 for i = 1:Nflaws
     Flaws{assign_flaws(i),1}(size(Flaws{assign_flaws(i),1})+1) = ...
-        (i/(k*V))^(1/m);
+        (i/(k*T_V))^(1/m);
 end
 %%
 % *assign_flaws*   [Nflaws x 1]    vector que contiene _Nflaws_ posiciones de
@@ -80,25 +80,25 @@ end
 
 %% Constantes del Material Objetivo
 % Todas las unidades estan en el sistema internacional de unidades
-T_r0 = 7850;            %Densidad volumetrica del objetivo
-T_m0 = T_dx*T_dy*T_r0;    %Masa de una particula
+T_rho = 7850;               %Densidad volumetrica del objetivo
+T_m0 = T_dx*T_dy*T_rho;     %Masa de una particula
 
 %Parametros de Huggoniot
-ss = 4699;
-C = 3630;
-S = 1800;
+T_ss = 4699;
+T_C = 3630;
+T_S = 1800;
 
 %Parametros de XSPH
-gamma = 1.81;
-alpha = 0.5;
-beta = 0.5;
-eta = 0.01;
-eps = 0.5;
+T_gamma = 1.81;
+T_alpha = 0.5;
+T_beta = 0.5;
+T_eta = 0.01;
+T_eps = 0.5;
 
 %Parametros de Elasticidad
 T_G = 8e10;         % Modulo de cortante
 T_Y0 = 6e8;         % Esfuerzo de fluencia
-T_E = ss^2*T_r0;    % Modulo de Young
+T_E = T_ss^2*T_rho;   % Modulo de Young
 
 %% Definir Geometria del Proyectil
 % Se definen las posiciones de las particulas que conforman el proyectil.
@@ -141,6 +141,31 @@ for i = 1:length(B_r)
     end
 end
 
+%% Constantes del Material Proyectil
+% Por el momento estas magnitudes corresponden a las mismas del objetivo
+%
+% **Consultar Propiedades para algun metal y reemplazaralas**
+B_rho = 7850;               %Densidad volumetrica del objetivo
+B_m0 = pi*B_dr^2*B_rho;     %Masa de una particula
+B_V = pi*B_dr^2*1;
+%Parametros de Huggoniot
+B_ss = 4699;
+B_C = 3630;
+B_S = 1800;
+
+%Parametros de XSPH
+B_gamma = 1.81;
+B_alpha = 0.5;
+B_beta = 0.5;
+B_eta = 0.01;
+B_eps = 0.5;
+
+%Parametros de Elasticidad
+B_G = 8e10;             % Modulo de cortante
+B_Y0 = 6e8;             % Esfuerzo de fluencia
+B_E = T_ss^2*T_rho;     % Modulo de Young
+
+
 %% Representacion de condiciones iniciales
 figure(1)
 plot(Target(:,1),Target(:,2),Bullet(:,1),Bullet(:,2),...
@@ -174,15 +199,25 @@ eps22 = zeros(N_part,1);
 E_int = zeros(N_part,1);        % Energia Interna
     dE_int = zeros(N_part,1);   % Derivada de Energia Interna
 
-%% Matrices para revisar
+%% Asignacion Selectiva de Propiedades
 % Hay que revisar esta matrices porque las propiedades deben inicializarse
 % de acuerdo al _tipo de las particulas_, es decir que se deben asignar
 % propiedades diferentes a las particulas del *objetivo* y a las particulas
 % del *proyectil*
-M = ones(N_part,1)*V*T_r0;  % Masa
-cs = ones(N_part,1)*ss;     % Velocidad del sonido
-Rho = ones(N_part,1)*T_r0;  % Densidad
+M = zeros(N_part,1);        % Masa de las particulas
+M(1:T_np) = ones(T_np,1)*T_V*T_rho; % Particulas del objetivo
+M(T_np+1:end) = ones(B_np,1)*B_V*B_rho; % Particulas del proyectil
+
+cs = zeros(N_part,1);       % Velocidad del sonido
+cs(1:T_np) = ones(T_np,1)*T_ss;
+cs(T_np+1:end) = ones(B_np,1)*B_ss;
+
+Rho = zeros(N_part,1);      % Densidad
+Rho(1:T_np) = ones(T_np,1)*T_rho; 
+Rho(T_np+1:end) = ones(B_np,1)*B_rho; 
+    
     dRho = zeros(N_part,1); % Derivada de la densidad
+    
 D = zeros(N_part,1);        % Damage
 
 %% Inicio de Simulacion
@@ -220,7 +255,7 @@ Densidad = zeros(N_part,n_m);
 %% Recorrido principal en el tiempo
 fprintf('Numero de Pasos = %d\n',steps)
 for ti = 1:steps
-    %fprintf('%d..',ti);
+    fprintf('%d..',ti);
     
     %%
     % Busqueda de Vecinos
@@ -245,11 +280,39 @@ for ti = 1:steps
         dkerny = kern;
     
     % Usando las funciones kern1, dkernx1 y dkerny1 se calcula el kernel
-    % y las derivadas x-y evaluadas en las particulas vecinas de cada una
-    % de las particulas del dominio.
+    % y las derivadas del kernel x-y evaluadas en las particulas vecinas 
+    % de cada una de las particulas del dominio.
     for i = 1:N_part
         kern{i} = kern1(Dist{i},h);
         dkernx{i} = dkernx1(Dist{i}, h, Particles, Nearpart{i}, i);
         dkerny{i} = dkerny1(Dist{i}, h, Particles, Nearpart{i}, i);
+        
+        % Calcular Presion hidrostatica con ecuacion de Mie-Gruniensen
+        %
+        %   Esta parte se puede hacer mas eficiente. De esta forma es
+        %   ineficiente porque realiza validacion y asignacion para cada
+        %   particula. Creo que si hago recorridos independientes para las
+        %   particulas del objetivo y del proyectil, solo hago dos
+        %   asignaciones y ninguna verificacion.
+        if i<= T_np
+            r0 = T_rho;     C = T_C;
+            S = T_S;        gamma = T_gamma;
+        else
+            r0 = B_rho;     C = B_C;
+            S = B_S;        gamma = B_gamma;
+        end
+        P(i) = EOSmie(E_int(i), r0, C, S, Rho(i), gamma);
+        
+        % Derivadas espaciales de las Velocidades
+        [dv1dx1(i), dv1dx2(i), dv2dx1(i), dv2dx2(i)] = ...
+            Velgradesp(Rho, M, V1, V2, dkernx{i}, dkerny{i},...
+            Nearpart{i},i);
+        
+        % Deformacion unitaria
+        [eps11(i), eps12(i), eps21(i), eps22(i)] = ...
+            deform(dv1dx1(i), dv1dx2(i), dv2dx1(i), dv2dx2(i));
+        
+        
     end
+    
 end

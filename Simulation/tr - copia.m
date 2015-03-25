@@ -5,7 +5,6 @@ ing. Daniel Luna.
 Desarrollo este script para entender la estructura general del c�digo de
 referencia.
 %}
-clear all;clc;
 %% Constantes
 %{
 Todas las unidades en sistema internacional de unidades
@@ -53,58 +52,10 @@ end
 t = 0;              %   int     Tiempo inicial
 steps = tf/dt;      %   int     Numero de pasos
 
-% Matrices para guardar informaci�n de la simulaci�n.
-Coordenadas = zeros([size(coorbar), steps]);
-Velocidad1 = zeros([size(V1),steps]);
-Velocidad2 = zeros([size(V2),steps]);
-Presion = zeros([size(P),steps]);
-Esfuerzos11 = zeros([size(dev11), steps]);
-Esfuerzos12 = zeros([size(dev12), steps]);
-Esfuerzos21 = zeros([size(dev21), steps]);
-Esfuerzos22 = zeros([size(dev22), steps]);
-Densidad = zeros([size(Rho), steps]);
 
 for ti=1:steps
-%%
-    fprintf('P %d/%d \n',ti,steps);
-    %~~~~~ Inicializaci�n ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    [Nearpart,Dist] = rangesearch(coorbar,coorbar,h);
-    %   Nearpart    cell {npart x 1} 
-    %   En el compartimiento i de Nearpart, se encuentra un vector [1 x n] 
-    %   que contiene los indices de las n particulas vecinas a la part�cula
-    %   de identidad i.
-    %   Dist        cell {npart x 1} 
-    %   En el compartimiento i de Dist, se encuentra un vector [1 x n] que 
-    %   contiene la distancia r_n a la que se encuentra cada una de las n
-    %   particulas vecinas de la part�cula i.
-    
-    kern = Dist;    %   cell {npart x 1}    kern contiene npart vectores, 
-                        % uno para cada particula. Cada vector mide [1x ni] 
-                        % siendo ni el numero de particulas vecinas de la 
-                        % particula i 
-    
-    kern = cellfun(@(x) x*0, kern, 'un',0);
-    %   kern    cell {npart x 1}
-    %   cellfun permite aplicar una funci�n a cada elemento del cell. En
-    %   este caso multiplica todas las matrices por 0. Se hace para inciar
-    %   el arreglo en 0's.
-    
-    dkernx = kern;  %   cell {npart x 1} 
-    dkerny = kern;  %   Derivadas del kern iniciadas en 0�s
-
     
     for i = 1:numpart 
-    
-        % Calculo de Kernel
-        kern{i} = kern1(Dist{i},h);
-        dkernx{i} = dkernx1(Dist{i}, h, coorbar, Nearpart{i}, i);
-        dkerny{i} = dkerny1(Dist{i}, h, coorbar, Nearpart{i}, i);        
-%{ 
-    Para la part�cula i, se calcula el kernel evaluado en sus n part�culas
-    vecinas.
-    Para la part�cula i, se calculan las derivadas x & y del kernel
-    evaluados en las particulas vecinas.  
-%}
         %%
         % Ecuaci�n de estado Mie Gruniensen
         P(i) = EOSmie(eint(i), r0, C, S, Rho(i), gamma);
@@ -112,7 +63,7 @@ for ti=1:steps
     Para la part�cula i, se calcula la presi�n hidrost�tica en funci�n de
     las demas variables de Estado. El calculo se hace usando la Ecuaci�n de
     Mie-Grniensen. Las variables de estado consisten en enrg�a interna,
-    densiada y Parametros de la curva de Huggoniot.
+    densidad y Parametros de la curva de Huggoniot.
 %}
         %%
         % Derivada Espacial de Velocidad
