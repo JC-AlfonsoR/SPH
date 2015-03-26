@@ -378,9 +378,4 @@ for ti = 1:steps
         dRho(i) = derivadarho(M, V1, V2, ...
             dkernx{i}, dkerny{i}, Nearpart{i}, i);
     end
-    
-    % Avanzar la densidad en el tiempo
-    Rho = Rho + dRho*dt;
-    
-    
 end

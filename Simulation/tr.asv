@@ -163,7 +163,7 @@ eps22 = zeros(numpart,1);   %------------
 eint = zeros(numpart,1);    % Energ�a interna y derivada
 deint = zeros(numpart,1);   %   [numpart x 1]
 %% Incio de la simulaci�n
-%{
+%
 Aca se corre la simulaci�nn
 %}
 display('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
@@ -283,7 +283,7 @@ for ti=1:steps
        %Calculo del da�o
         ei = J/((1-D(i))*E);
         
-        for j=1:length(Flaws{i})
+        for j=1:length(Flaws{i});
             count = 0;
             if ei>length(Flaws{i}(j)) %Posible error, Flaws{i}(j) es un 
                 %double, por lo que length(flaws{i}(j)) siempre es 1.
