@@ -300,7 +300,7 @@ for ti = 1:steps
         %   particula. Creo que si hago recorridos independientes para las
         %   particulas del objetivo y del proyectil, solo hago dos
         %   asignaciones y ninguna verificacion.
-        P(i) = EOSmie(E_int(i), T_r0, T_C, T_S, Rho(i), T_gamma);
+        P(i) = EOSmie(E_int(i), T_rho, T_C, T_S, Rho(i), T_gamma);
         
         % Derivadas espaciales de las Velocidades
         [dv1dx1(i), dv1dx2(i), dv2dx1(i), dv2dx2(i)] = ...
@@ -382,5 +382,15 @@ for ti = 1:steps
     % Avanzar la densidad en el tiempo
     Rho = Rho + dRho*dt;
     
-    
+    for i = 1:T_np
+       % Conservacion de Momentum
+       [dV1(i),dV2(i)] = Momentumeq2d(Tau11, Tau12, Tau21, Tau22, P, Rho,...
+           dkernx{i}, dkerny{i}, M, Nearpart{i}, i, cd, Dist{i}, Particles,...
+           h, V1, V2);
+       
+       % Conservacion de la Energia
+       dE_int = Deint(Tau11(i), Tau12(i), Tau21(i), Tau22(i), P, Rho,...
+           dkernx{i}, dkerny{i}, M, Nearpart{i}, cs, Dist{i}, Particles,...
+           h, V1, V2, eps11(i), eps12(i), eps21(i), eps22(i));
+    end
 end
