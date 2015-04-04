@@ -3,7 +3,7 @@ clear all
 % SPH programa principal Taylor bar 
 %%
 %Separacion entre particulas
-dy = 1e-3;
+dy = 0.000384848/2;
 dx=dy;
 % dyg=0.00384848;
 % dxg=dyg;
@@ -90,23 +90,20 @@ cs=(ones(numpart,1))*ss;
 %%
 %Velocidades
 V1=(ones(numpart,1))*0;
-V2=(ones(numpart,1))*0;
+V2=(ones(numpart,1));
 Vdistr=linspace(v_s,0,20);
-%for i=1:length(Vdistr)
-%    Bstart=27;
-%    Bfinish=40;
-%    V1(((i-1)*133)+(47+(i-1)):((i-1)*133)+(87-(i-1)))=Vdistr(i);
+for i=1:length(Vdistr)
+    Bstart=27;
+    Bfinish=40;
+    V1(((i-1)*133)+(47+(i-1)):((i-1)*133)+(87-(i-1)))=Vdistr(i);
     
-%end
-V_1 = -300;
-rr = randint(50,1,[1,numpart]);
-V2(rr) = V_1;
+end
 
-%Velplot=zeros(size(X));
-%for i=1:numpart
-%Velplot(i)=V1(i);
-%end
-%image([-100 100], [-100 100], Velplot, 'CDataMapping', 'scaled');
+Velplot=zeros(size(X));
+for i=1:numpart
+Velplot(i)=V1(i);
+end
+image([-100 100], [-100 100], Velplot, 'CDataMapping', 'scaled');
 %%
 %Accel
 dV1=(ones(numpart,1))*0;
@@ -156,7 +153,7 @@ Densidad = zeros([size(Rho), steps]);
 
 for ti=1:steps
 %%
-ti
+          
      [Nearpart,Dist]=rangesearch(coorbar,coorbar,h);
      kern=Dist;
      kern=cellfun(@(x) x*0,kern,'un',0);

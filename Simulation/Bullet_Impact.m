@@ -390,7 +390,7 @@ for ti = 1:steps
     for i = 1:T_np
        % Conservacion de Momentum
        [dV1(i),dV2(i)] = Momentumeq2d(Tau11, Tau12, Tau21, Tau22, P, Rho,...
-           dkernx{i}, dkerny{i}, M, Nearpart{i}, i, cd, Dist{i}, Particles,...
+           dkernx{i}, dkerny{i}, M, Nearpart{i}, i, cs, Dist{i}, Particles,...
            h, V1, V2);
        
        % Conservacion de la Energia
@@ -411,14 +411,17 @@ for ti = 1:steps
         
         %XSPH
         [V1(i),V2(i)] = XSPH(Nearpart{i}, M, Rho, V1, V2, kern{i}, i);
+        %Particles(i,:) = Particles(i,:) + [V1(1),V2(i)]*dt;
     end
     Particles(1:T_np,:) = Particles(1:T_np,:) + ...
-        [V1(1:T_np), V1(1:T_np)]*dt;
+        [V1(1:T_np), V2(1:T_np)]*dt;
     
     %t = t+dt;
-    %plot(Particles(:,1), Particles(:,2),'.b')
+    plot(Particles(:,1), Particles(:,2),'.b')
+    xlim([-10e-3,6e-3])
+    ylim([-7e-3,7e-3])
     %axis('equal')
-    %drawnow
+    drawnow
     
     % Hasta aca se tiene configurado completamente la simulacion para
     % las particulas del target
