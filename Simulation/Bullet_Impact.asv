@@ -219,9 +219,8 @@ Rho(T_np+1:end) = ones(B_np,1)*B_rho;
 D = zeros(N_part,1);        % Damage
 
 %% Asignacion de condiciones iniciales
-V_1 = 300;
-rr = randint(50,1,[1,T_np]);
-V1(rr) = V_1;
+rr = randint(50,1,[0,T_np]);
+
 
 %% Representacion de condiciones iniciales
 figure(1)
