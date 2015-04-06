@@ -26,7 +26,7 @@ clear all; clc; close all;
 % Se define las posiciones de las particulas que conforman el objetivo
 %
 % Geometria del objetivo
-T_dy = 4e-4; %    Separacion entre particulas
+T_dy = 3e-4; %    Separacion entre particulas
 T_dx = T_dy;   %     
 k = 2.0;   %    Constante para expandir radio de soporte
 h = k*T_dx;  %    Radio de soporte
@@ -521,13 +521,9 @@ end
 %% Comentarios JC
 % 
 % Situaciones por corregir:
-% # Generacion de numero complejos
-% Se estan generando coordenadas complejas en el arreglo _Particles_, pro
-% el momento lo soluciono tomando solo la parte real de _Particles_.
-% Tambien se estan generando complejos en _dE_int_ y otras derivadas
-% # Propiedades de Materiales
-% Se esta trabajndo unicamente con las propiedades del basalto. Falta
-% consultar propiedades para un material comun en balas
+% # 
+% # ITEM2
+% 
 %
 %
 %
