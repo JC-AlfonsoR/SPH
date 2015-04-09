@@ -2,7 +2,6 @@
 %
 % Simulacion de impacto
 %
-% Version 1
 %
 % Marzo 18 - 2015
 %
@@ -265,7 +264,7 @@ Densidad = zeros(N_part,n_m);
 %% Recorrido principal en el tiempo
 fprintf('Numero de Pasos = %d\n',steps)
 for ti = 1:steps
-    fprintf('%d..',ti);
+    %fprintf('%d..',ti);
     
     
     % Busqueda de Vecinos
@@ -406,8 +405,8 @@ for ti = 1:steps
     %%%Avanzar la velocidad
     % NO avanzo la velocidad para que las particulas no se muevan
 
-    %V1(1:T_np) = V1(1:T_np) + dV1(1:T_np)*dt;
-    %V2(1:T_np) = V2(1:T_np) + dV2(1:T_np)*dt;
+    V1(1:T_np) = V1(1:T_np) + dV1(1:T_np)*dt;
+    V2(1:T_np) = V2(1:T_np) + dV2(1:T_np)*dt;
     E_int(1:T_np) = E_int(1:T_np) + dE_int(1:T_np)*dt;
     
     %%%Correcciones
@@ -524,12 +523,13 @@ for ti = 1:steps
     
     
     %% Graficas
-    if mod(ti-1,5)==0 %Hacer graficas cada 5 pasos
-        plot(Particles(1:T_np,1), Particles(1:T_np,2),'.','Color','black')
+    if mod(ti-1,15)==0 %Hacer graficas cada 5 pasos
+        %plot(Particles(1:T_np,1), Particles(1:T_np,2),'.','Color','black')
         hold on
         %plot(Particles(T_np+1:end,1), Particles(T_np+1:end,2),'.g')
-        scatter(Particles(T_np+1:end,1),Particles(T_np+1:end,2),...
-            10,Tau12(T_np+1:end),'filled')
+        %scatter(Particles(T_np+1:end,1),Particles(T_np+1:end,2),...
+        %    10,P(T_np+1:end),'filled')
+        scatter(Particles(:,1),Particles(:,2),10,P,'filled')
         xlim([-4e-3,2e-3])
         ylim([-3e-3,3e-3])
         %axis('equal')
