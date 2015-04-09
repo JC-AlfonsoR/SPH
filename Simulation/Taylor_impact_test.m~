@@ -521,14 +521,10 @@ for ti = 1:steps
         [V1(T_np+1:N_part), V2(T_np+1:N_part)]*dt;
     Particles = real(Particles);
     
-    figure (1)
-    hFig = figure(1);
-    set(gcf,'PaperPositionMode','auto')
-    set(hFig, 'Position', [0 0 1400 800])
    
     %% Graficas
     if mod(ti-1,15)==0 %Hacer graficas cada 5 pasos
-        hFig;
+        
         %plot(Particles(1:T_np,1), Particles(1:T_np,2),'.','Color','black')
         %hold on
         %plot(Particles(T_np+1:end,1), Particles(T_np+1:end,2),'.g')

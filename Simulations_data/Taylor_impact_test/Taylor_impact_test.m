@@ -2,6 +2,7 @@
 %
 % Simulacion de impacto
 %
+% Version 1
 %
 % Marzo 18 - 2015
 %
@@ -25,14 +26,14 @@ clear all; clc; close all;
 % Se define las posiciones de las particulas que conforman el objetivo
 %
 % Geometria del objetivo
-T_dy = 1.2e-4; %    Separacion entre particulas
+T_dy = 1e-4; %    Separacion entre particulas
 T_dx = T_dy;   %     
 k = 2.0;   %    Constante para expandir radio de soporte
 h = k*T_dx;  %    Radio de soporte
 
 T_width = 0.0005;               % Ancho del objetivo
-T_height = 0.0026;              % Alto del objetivo
-T_x = 0:T_dx:T_width;
+T_height = 0.0036;              % Alto del objetivo
+T_x = -T_width : T_dx : T_width;
 T_y = -T_height : T_dy : T_height;
 [X,Y] = meshgrid(T_x, T_y);     % Matriz con la malla de las posiciones x,y para las particulas
 Target = [X(:),Y(:)];           %   | x_1 , y_1 |   En esta matriz organiza    
@@ -244,7 +245,7 @@ dt = max(h/cs); % Paso de tiempo
                 % min(h/cs)
                 % pero lo ejecuta con max para que dt sea diferente de 0 y
                 % la simulacion no sea muy larga
-tf = 0.002/max(V1); % Tiempo final - avanzar solo 1 cm
+tf = 1e-6*20; % Tiempo final
 steps = round(tf/dt);  % Numero de pasos
 
 %
@@ -264,7 +265,7 @@ Densidad = zeros(N_part,n_m);
 %% Recorrido principal en el tiempo
 fprintf('Numero de Pasos = %d\n',steps)
 for ti = 1:steps
-    %fprintf('%d..',ti);
+    fprintf('%d..',ti);
     
     
     % Busqueda de Vecinos
@@ -403,8 +404,6 @@ for ti = 1:steps
     end
     
     %%%Avanzar la velocidad
-    % NO avanzo la velocidad para que las particulas no se muevan
-
     V1(1:T_np) = V1(1:T_np) + dV1(1:T_np)*dt;
     V2(1:T_np) = V2(1:T_np) + dV2(1:T_np)*dt;
     E_int(1:T_np) = E_int(1:T_np) + dE_int(1:T_np)*dt;
@@ -417,22 +416,14 @@ for ti = 1:steps
         %%%XSPH
         [V1(i),V2(i)] = XSPH(Nearpart{i}, M, Rho, V1, V2, kern{i}, i);
     end
-    %Particles(1:T_np,:) = Particles(1:T_np,:) + ...
-    %    [V1(1:T_np), V2(1:T_np)]*dt;
+    Particles(1:T_np,:) = Particles(1:T_np,:) + ...
+        [V1(1:T_np), V2(1:T_np)]*dt;
     
     % Hasta aca se tiene configurado completamente la simulacion para
     % las particulas del target
     
     %% Recorrido en las particulas del Bullet
     for i = T_np+1:N_part
-        % Correccion forzosa de la posicion
-        %if (Particles(i,1) > -T_dx/4)
-        %    Particles(i,1) = -T_dx/4; % Forzar la particula a no pasar
-        %    % el target
-        %    V1(i) = V1(i)/2.0;
-        %    V2(i) = V2(i) + sign(Particles(i,2))*V1(i)/2.0;
-        %end
-        
         kern{i} = kern1(Dist{i},h);
         dkernx{i} = dkernx1(Dist{i}, h, Particles, Nearpart{i}, i);
         dkerny{i} = dkerny1(Dist{i}, h, Particles, Nearpart{i}, i);
@@ -521,39 +512,16 @@ for ti = 1:steps
         [V1(T_np+1:N_part), V2(T_np+1:N_part)]*dt;
     Particles = real(Particles);
     
-    figure (1)
-    hFig = figure(1);
-    set(gcf,'PaperPositionMode','auto')
-    set(hFig, 'Position', [0 0 1400 800])
-   
+    
     %% Graficas
-    if mod(ti-1,15)==0 %Hacer graficas cada 5 pasos
-        hFig;
-        %plot(Particles(1:T_np,1), Particles(1:T_np,2),'.','Color','black')
-        %hold on
-        %plot(Particles(T_np+1:end,1), Particles(T_np+1:end,2),'.g')
-        %scatter(Particles(T_np+1:end,1),Particles(T_np+1:end,2),...
-        %    10,P(T_np+1:end),'filled')
-        subplot(1,2,1)
-        scatter(Particles(:,1),Particles(:,2),12,P,'filled')
+    if mod(ti,5)==0 %Hacer graficas cada 5 pasos
+        plot(Particles(1:T_np,1), Particles(1:T_np,2),'.b')
+        hold all
+        plot(Particles(T_np+1:end,1), Particles(T_np+1:end,2),'.g')
         xlim([-4e-3,2e-3])
-        ylim([-3e-3,3e-3])
-        title('Presion')
+        ylim([-4e-3,4e-3])
         %axis('equal')
-        caxis([4e-4,4e4]);
-        colorbar()
         drawnow
-        %hold off
-        
-        subplot(1,2,2)
-        scatter(Particles(:,1),Particles(:,2),15,V2,'filled')
-        xlim([-4e-3,2e-3])
-        ylim([-3e-3,3e-3])
-        title('V2')
-        caxis([-10,10]);
-        colorbar()
-        drawnow
-        
     end
     
 end
