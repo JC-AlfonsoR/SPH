@@ -34,8 +34,8 @@ dv2dx2 = 0;
 
 for i=1:length(Npart);
     fact = m(Npart(i))/rho(Npart(i));
-    dv1 = V1(Spart)-V1(Npart(i));
-    dv2 = V2(Spart)-V2(Npart(i));
+    dv1 = V1(Npart(i));%V1(Spart)-V1(Npart(i));
+    dv2 = V1(Npart(i));%V2(Spart)-V2(Npart(i));
     
     dx1 = dwx(i);
     dx2 = dwy(i);
