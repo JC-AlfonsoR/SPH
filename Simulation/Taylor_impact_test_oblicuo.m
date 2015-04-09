@@ -79,7 +79,8 @@ end
 
 %% Constantes del Material Objetivo
 % Todas las unidades estan en el sistema internacional de unidades
-T_rho = 1e5;               %Densidad volumetrica del objetivo
+
+T_rho = 7850;               %Densidad volumetrica del objetivo
 T_m0 = T_dx*T_dy*T_rho;     %Masa de una particula
 
 %Parametros de Huggoniot
@@ -95,8 +96,8 @@ T_eta = 0.01;
 T_eps = 0.5;
 
 %Parametros de Elasticidad
-T_G = 8e20;         % Modulo de cortante
-T_Y0 = 6e16;         % Esfuerzo de fluencia
+T_G = 8e10;         % Modulo de cortante
+T_Y0 = 6e8;         % Esfuerzo de fluencia
 T_E = T_ss^2*T_rho;   % Modulo de Young
 
 %% Definir Geometria del Proyectil
@@ -219,10 +220,11 @@ Rho(T_np+1:end) = ones(B_np,1)*B_rho;
 D = zeros(N_part,1);        % Damage
 
 %% Asignacion de condiciones iniciales
-V_1 = 300;
+V_1 = 200;
+V_2 = 30;
 %rr = randint(50,1,[1,T_np]);
 V1(T_np+1:N_part) = V_1; % Velocidad inicial del Bullet
-
+V2(T_np+1:N_part) = V_2; % impacto oblicuo
 %% Representacion de condiciones iniciales
 figure(1)
 plot(Target(:,1),Target(:,2),Bullet(:,1),Bullet(:,2),...
@@ -403,7 +405,7 @@ for ti = 1:steps
     end
     
     %%%Avanzar la velocidad
-    % NO avanzo la velocidad para que las particulas no se muevan
+    % 
 
     V1(1:T_np) = V1(1:T_np) + dV1(1:T_np)*dt;
     V2(1:T_np) = V2(1:T_np) + dV2(1:T_np)*dt;
@@ -417,8 +419,8 @@ for ti = 1:steps
         %%%XSPH
         [V1(i),V2(i)] = XSPH(Nearpart{i}, M, Rho, V1, V2, kern{i}, i);
     end
-    %Particles(1:T_np,:) = Particles(1:T_np,:) + ...
-    %    [V1(1:T_np), V2(1:T_np)]*dt;
+    Particles(1:T_np,:) = Particles(1:T_np,:) + ...
+        [V1(1:T_np), V2(1:T_np)]*dt;
     
     % Hasta aca se tiene configurado completamente la simulacion para
     % las particulas del target
@@ -521,10 +523,14 @@ for ti = 1:steps
         [V1(T_np+1:N_part), V2(T_np+1:N_part)]*dt;
     Particles = real(Particles);
     
+    figure (1)
+    hFig = figure(1);
+    set(gcf,'PaperPositionMode','auto')
+    set(hFig, 'Position', [0 0 800 400])
    
     %% Graficas
     if mod(ti-1,15)==0 %Hacer graficas cada 5 pasos
-        
+        hFig;
         %plot(Particles(1:T_np,1), Particles(1:T_np,2),'.','Color','black')
         %hold on
         %plot(Particles(T_np+1:end,1), Particles(T_np+1:end,2),'.g')
@@ -542,11 +548,11 @@ for ti = 1:steps
         %hold off
         
         subplot(1,2,2)
-        scatter(Particles(:,1),Particles(:,2),15,V2,'filled')
+        scatter(Particles(:,1),Particles(:,2),15,Tau12,'filled')
         xlim([-4e-3,2e-3])
         ylim([-3e-3,3e-3])
-        title('V2')
-        caxis([-10,10]);
+        title('Tau_{12}')
+        caxis([-4e8,4e8]);
         colorbar()
         drawnow
         
