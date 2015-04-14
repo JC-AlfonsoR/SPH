@@ -223,7 +223,7 @@ Rho(T_np+1:end) = ones(B_np,1)*B_rho;
 D = zeros(N_part,1);        % Damage
 
 %% Asignacion de condiciones iniciales
-V_1 = 100;
+V_1 = 50;
 %rr = randint(50,1,[1,T_np]);
 V1(T_np+1:N_part) = V_1; % Velocidad inicial del Bullet
 %
