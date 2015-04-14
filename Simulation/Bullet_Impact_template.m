@@ -26,13 +26,13 @@ clear all; clc; close all;
 % Se define las posiciones de las particulas que conforman el objetivo
 %
 % Geometria del objetivo
-T_dy = 4e-4; %    Separacion entre particulas
-T_dx = T_dy;   %     
+T_dy = 0.5e-4; %    Separacion entre particulas
+T_dx = T_dy*2;   %     
 k = 2.0;   %    Constante para expandir radio de soporte
 h = k*T_dx;  %    Radio de soporte
 
-T_width = 0.0016;               % Ancho del objetivo
-T_height = 0.0076;              % Alto del objetivo
+T_width = 0.0005;               % Ancho del objetivo
+T_height = 0.005;              % Alto del objetivo
 T_x = -T_width : T_dx : T_width;
 T_y = -T_height : T_dy : T_height;
 [X,Y] = meshgrid(T_x, T_y);     % Matriz con la malla de las posiciones x,y para las particulas
@@ -106,14 +106,14 @@ T_E = T_ss^2*T_rho;   % Modulo de Young
 % Se asume que el proyectil se mueve en la direccion horizontal.
 %
 % Proyectil rectangular
-%{
-s_x = 4e-4;             % Separacion en x entre proyectil y objetivo
-B_width = T_width/5;    % Ancho del proyectil
-B_height = T_height/5;  % Alto del proyectil
+%
+s_x = h/5;             % Separacion en x entre proyectil y objetivo
+B_width = 0.001;    % Ancho del proyectil
+B_height = 003;  % Alto del proyectil
 B_x0 = min(Target(:,1))-B_width-s_x;
 B_y0 = mean(Target(:,2)); % Posiciones de referencia para el objetivo
-B_dx = T_dx;            % Separacion entre particulas del proyectil
-B_dy = B_dx;
+B_dx = 1e-4;            % Separacion entre particulas del proyectil
+B_dy = 1e-4;
 
 B_x = [-B_width : B_dx : B_width] + B_x0;
 B_y = [-B_height : B_dy : B_height] + B_y0;
@@ -124,9 +124,10 @@ B_np = size(Bullet,1);      % Numero de particulas en el proyectil
 %}
 %%
 % Proyectil redondo
-s_x = 4e-4;         % separacion en x entre proyectil y objetivo
-B_dr = T_dx;        % Variacion en el radio del proyectil
-B_rmax = T_height/5;  % Radio maximo del proyectil
+%{
+s_x = h/5;         % separacion en x entre proyectil y objetivo
+B_dr = 1e-4;        % Variacion en el radio del proyectil
+B_rmax = 0.002;  % Radio maximo del proyectil
 B_r = B_dr:B_dr:B_rmax; % Valores del radio en el proyectil
 n_theta = 18*2;         % Numero de puntos a considerar en el angulo
 B_theta = linspace(0,2*pi,n_theta); % Valores del angulo
@@ -140,14 +141,16 @@ for i = 1:length(B_r)
             B_r(i)*sin(B_theta(j))+B_cy];
     end
 end
-
+%}
 %% Constantes del Material Proyectil
 % Por el momento estas magnitudes corresponden a las mismas del objetivo
 %
 % **Consultar Propiedades para algun metal y reemplazaralas**
 B_rho = 7850;               %Densidad volumetrica del objetivo
-B_m0 = pi*B_dr^2*B_rho;     %Masa de una particula
-B_V = pi*B_dr^2*1;
+%B_m0 = pi*B_dr^2*B_rho;     %Masa de una particula -Cilindrico
+B_m0 = B_dx*B_dy*B_rho;
+%B_V = pi*B_dr^2*1; % Circular
+B_V = B_dx*B_dy;
 %Parametros de Huggoniot
 B_ss = 4699;
 B_C = 3630;
@@ -219,7 +222,7 @@ Rho(T_np+1:end) = ones(B_np,1)*B_rho;
 D = zeros(N_part,1);        % Damage
 
 %% Asignacion de condiciones iniciales
-V_1 = 300;
+V_1 = 50;
 %rr = randint(50,1,[1,T_np]);
 V1(T_np+1:N_part) = V_1; % Velocidad inicial del Bullet
 
@@ -244,7 +247,7 @@ dt = max(h/cs); % Paso de tiempo
                 % min(h/cs)
                 % pero lo ejecuta con max para que dt sea diferente de 0 y
                 % la simulacion no sea muy larga
-tf = 1e-6*20; % Tiempo final
+tf = 0.5e-6*20; % Tiempo final
 steps = round(tf/dt);  % Numero de pasos
 
 %%
@@ -264,7 +267,7 @@ Densidad = zeros(N_part,n_m);
 %% Recorrido principal en el tiempo
 fprintf('Numero de Pasos = %d\n',steps)
 for ti = 1:steps
-    fprintf('%d..',ti);
+    %fprintf('%d..',ti);
     
     
     %% Busqueda de Vecinos
@@ -509,9 +512,12 @@ for ti = 1:steps
     
     
     %% Graficas
-    plot(Particles(:,1), Particles(:,2),'.b')
-    xlim([-10e-3,6e-3])
-    ylim([-7e-3,7e-3])
+    %plot(Particles(:,1), Particles(:,2),'.b')
+    scatter(Particles(:,1),Particles(:,2),10,V1,'filled')
+    caxis([-V_1/2,V_1])
+    colorbar()
+    xlim([-6e-3,2e-3])
+    ylim([-4e-3,4e-3])
     %axis('equal')
     drawnow
     

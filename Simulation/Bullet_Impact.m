@@ -1,24 +1,5 @@
 %% Bullet_Impact
-%
-% Simulacion de impacto
-%
-% Version 1
-%
-% Marzo 18 - 2015
-%
-% Author: *J. Camilo Alfonso R.*
-%
-% Codigo basado en rutinas de Ing. *Daniel Luna*
-%
-% Profesor Asesor: *Andres Gonzalez Mancera*
-%
-% _*Problema Especial IMEC*_
-%
-% Simulacion de impacto entre proyectil ductil y objetivo fragil
-%
-% Disponible en repositorio publico <https://github.com/JC-AlfonsoR/SPH.git SPH>
-%
-% _Se omiten tildes para evitar problemas de compatibilidad en ecoding_
+
 clear all; clc; close all;
 %% Definir Geometria del Objetivo
 % Todas las unidades son dadas en el sistema internacional de unidades
@@ -26,12 +7,12 @@ clear all; clc; close all;
 % Se define las posiciones de las particulas que conforman el objetivo
 %
 % Geometria del objetivo
-T_dy = 4e-4; %    Separacion entre particulas
+T_dy = 1.5e-4; %    Separacion entre particulas
 T_dx = T_dy;   %     
 k = 2.0;   %    Constante para expandir radio de soporte
 h = k*T_dx;  %    Radio de soporte
 
-T_width = 0.0016;               % Ancho del objetivo
+T_width = 0.0006;               % Ancho del objetivo
 T_height = 0.0076;              % Alto del objetivo
 T_x = -T_width : T_dx : T_width;
 T_y = -T_height : T_dy : T_height;
@@ -124,11 +105,11 @@ B_np = size(Bullet,1);      % Numero de particulas en el proyectil
 %}
 %%
 % Proyectil redondo
-s_x = 4e-4;         % separacion en x entre proyectil y objetivo
+s_x = h/2;         % separacion en x entre proyectil y objetivo
 B_dr = T_dx;        % Variacion en el radio del proyectil
 B_rmax = T_height/5;  % Radio maximo del proyectil
 B_r = B_dr:B_dr:B_rmax; % Valores del radio en el proyectil
-n_theta = 18*2;         % Numero de puntos a considerar en el angulo
+n_theta = 18*3;         % Numero de puntos a considerar en el angulo
 B_theta = linspace(0,2*pi,n_theta); % Valores del angulo
 B_cx = min(Target(:,1)) - B_rmax - s_x; % Centro del proyectil
 B_cy = mean(Target(:,2));
@@ -219,7 +200,7 @@ Rho(T_np+1:end) = ones(B_np,1)*B_rho;
 D = zeros(N_part,1);        % Damage
 
 %% Asignacion de condiciones iniciales
-V_1 = 300;
+V_1 = 100;
 %rr = randint(50,1,[1,T_np]);
 V1(T_np+1:N_part) = V_1; % Velocidad inicial del Bullet
 
@@ -260,6 +241,9 @@ Esfuerzos12 = zeros(N_part,n_m);
 Esfuerzos21 = zeros(N_part,n_m);
 Esfuerzos22 = zeros(N_part,n_m);
 Densidad = zeros(N_part,n_m);
+Color = zeros(N_part,1);
+    Color(1:T_np) = 1;
+    Color(T_np+1:N_part) = 0;
 
 %% Recorrido principal en el tiempo
 fprintf('Numero de Pasos = %d\n',steps)
@@ -509,12 +493,16 @@ for ti = 1:steps
     
     
     %% Graficas
-    plot(Particles(:,1), Particles(:,2),'.b')
-    xlim([-10e-3,6e-3])
-    ylim([-7e-3,7e-3])
-    %axis('equal')
-    drawnow
-    
+    %plot(Particles(:,1), Particles(:,2),'.b')
+    if mod(ti-1,5)==0
+        scatter(Particles(:,1),Particles(:,2),15,V1,'filled')
+        caxis([-100,100])
+        colorbar()
+        %xlim([-10e-3,6e-3])
+        %ylim([-7e-3,7e-3])
+        axis('equal')
+        drawnow
+    end
     
 end
 
