@@ -1,0 +1,40 @@
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2012 The MathWorks, Inc.
+                    R2012b (8.0.0.783) 64-bit (glnxa64)
+                              August 22, 2012
+
+
+	This is a Classroom License for instructional use only.
+	Research and commercial use is prohibited.
+ 
+To get started, type one of these: helpwin, helpdesk, or demo.
+For product information, visit www.mathworks.com.
+ 
+>> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>>    Inicio de la simulacion
+>> ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> Numero de Pasos = 269
+>> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> [Warning: Objects of specgraph.scattergroup class exist - not clearing this
+class
+or any of its superclasses] 
+[Warning: Objects of scribe.legendinfo class exist - not clearing this class
+or any of its superclasses] 
+[Warning: Objects of scribe.legendinfochild class exist - not clearing this
+class
+or any of its superclasses] 
+[Warning: Objects of scribe.colorbar class exist - not clearing this class
+or any of its superclasses] 
+[Warning: Objects of graphics.panbehavior class exist - not clearing this class
+or any of its superclasses] 
+[Warning: Objects of graphics.zoombehavior class exist - not clearing this class
+or any of its superclasses] 
+[Warning: Objects of graphics.rotate3dbehavior class exist - not clearing this
+class
+or any of its superclasses] 
+[Warning: Objects of graphics.datacursorbehavior class exist - not clearing this
+class
+or any of its superclasses] 
+[Warning: Objects of graphics.ploteditbehavior class exist - not clearing this
+class
+or any of its superclasses] 
