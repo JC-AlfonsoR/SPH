@@ -4,7 +4,7 @@
 % trdata disponible en: https://github.com/JC-AlfonsoR/SPH/raw/master/...
 %                               ...Simulations_data/Bulletimpact_data.mat
 %
-% La simulación BulletImpact_data fue corrida con el script BulletImpact.m
+% La simulaciï¿½n BulletImpact_data fue corrida con el script BulletImpact.m
 % con las sigueintes especificaciones:
 %
 %
@@ -14,14 +14,14 @@
 %
 %% Importar datos
 clear;close all; clc;
-% Abrir el BulletImpact_data.mat y extraer la información en el arreglo
+% Abrir el BulletImpact_data.mat y extraer la informaciï¿½n en el arreglo
 % correspondiente.
 %       Todos los datos son arreglos de orden 3, con 1407 datos que
-%       corresponden a las 1407 particulas de la simulación. Todos los
-%       arreglos tienen tamaño 200 en la dirección 3, que corresponden a
-%       los 200 steps de tiempo en la simulación.
+%       corresponden a las 1407 particulas de la simulaciï¿½n. Todos los
+%       arreglos tienen tamaï¿½o 200 en la direcciï¿½n 3, que corresponden a
+%       los 200 steps de tiempo en la simulaciï¿½n.
    
-BulletImpact = open('BulletImpact_data.mat');
+BulletImpact = open('Bulletimpact_data.mat');
 Coord = BulletImpact.Coordenadas;
 V1 = BulletImpact.Velocidad1;
 V2 = BulletImpact.Velocidad2;
@@ -39,17 +39,25 @@ steps = 174;
 % The step #175 aborted the simulation
 
 
-for i=1:steps
+
    figure(1)
-   %plot(Coord(:,1,i), Coord(:,2,i),'.b')
-   scatter(Coord(:,1,i), Coord(:,2,i),10,V(:,1,i),'filled')
-   axis([-0.015 0.015 -0.01 0.03])
-   title('Simulacion BulletImpact.mat - V [m/s]')
+   subplot(1,2,1)
+   scatter(Coord(:,1,1), Coord(:,2,1),10,V(:,1,1),'filled')
+   axis([-0.01 0.01 0 0.025])
+   title('Inicial')
    xlabel('x  [m]')
    ylabel('y [m]')
    colorbar
-   drawnow
-end
+   
+   subplot(1,2,2)
+   scatter(Coord(:,1,steps), Coord(:,2,steps),10,V(:,1,steps),'filled')
+   axis([-0.01 0.01 0 0.025])
+   title('Final')
+   xlabel('x  [m]')
+   ylabel('y [m]')
+   colorbar
+
+
 %% Comentarios finales
 %{
 % Febrero 10
