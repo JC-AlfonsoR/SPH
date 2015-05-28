@@ -51,10 +51,10 @@ for i=1:length(Npart)
     dx = abs(coorglobal(Npart(i),1) - coorglobal(selfpart,1));
     dy = abs(coorglobal(Npart(i),2) - coorglobal(selfpart,2));
     Mgh = Monaghanvisc(selfpart, NP, rho, cs, Dist(i), V1, V2, dx, dy, h);
-    dV1 = dV1 + mb*(sigma11a*rhoa21+sigma11b*rhob21+Mgh)*dW(1) +...
-        mb*(sigma12a*rhoa21+sigma12b*rhob21)*dW(2);
-    dV2 = dV2 + mb*(sigma21a*rhoa21+sigma21b*rhob21)*dW(1) +...
-        mb*(sigma22a*rhoa21+sigma22b*rhob21+Mgh)*dW(2);
+    dV1 = (dV1 + mb*(sigma11a*rhoa21+sigma11b*rhob21+Mgh)*dW(1) +...
+        mb*(sigma12a*rhoa21+sigma12b*rhob21)*dW(2));
+    dV2 = (dV2 + mb*(sigma21a*rhoa21+sigma21b*rhob21)*dW(1) +...
+        mb*(sigma22a*rhoa21+sigma22b*rhob21+Mgh)*dW(2));
 end
 %% Referencias
 %{

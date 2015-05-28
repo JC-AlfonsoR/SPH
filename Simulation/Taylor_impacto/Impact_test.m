@@ -8,23 +8,22 @@
 
 clear all; clc; close all;
 %% Definir Geometria del Objetivo
-f_forzar = 8e-6;
+f_forzar = 8e-5;
 
 % Todas las unidades son dadas en el sistema internacional de unidades
 %
 % Se define las posiciones de las particulas que conforman el objetivo
 %
 % Geometria del objetivo
-%tic
-T_dy = 2e-4; %    Separacion entre particulas
-T_dx = T_dy/2;   %     
-k = 12.0;   %    Constante para expandir radio de soporte
+tic
+T_dy = 0.3e-4; %    Separacion entre particulas
+T_dx = T_dy;   %     
+k = 20.0;   %    Constante para expandir radio de soporte
 h = k*T_dx;  %    Radio de soporte
 
-T_width = 0.0015;               % Ancho del objetivo
-T_height = 0.004;              % Alto del objetivo
-%T_x = linspace(-T_width,T_width,3);
-T_x = -T_width : T_dx : T_width;
+T_width = 0.0001;               % Ancho del objetivo
+T_height = 0.005;              % Alto del objetivo
+T_x = linspace(-T_width,T_width,3);
 T_y = -T_height : T_dy : T_height;
 [X,Y] = meshgrid(T_x, T_y);     % Matriz con la malla de las posiciones x,y para las particulas
 Target = [X(:),Y(:)];           %   | x_1 , y_1 |   En esta matriz organiza    
@@ -88,7 +87,7 @@ T_eps = 0.5;
 
 %Parametros de Elasticidad
 T_G = 8e10;         % Modulo de cortante
-T_Y0 = 6e8;         % Esfuerzo de fluencia % Cambio de e8 a e20
+T_Y0 = 6e20;         % Esfuerzo de fluencia % Cambio de e8 a e20
 T_E = T_ss^2*T_rho;   % Modulo de Young
 
 %% Definir Geometria del Proyectil
@@ -234,7 +233,7 @@ display('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
 
 t = 0;  %Tiempo Inicial
 steps = 300;
-dt = 5e-10;
+dt = 5e-12;
 %dt = max(h/cs)/2; % Paso de tiempo
                 % El paso de tiempo se define de esta forma para que la
                 % simulacion sea capaz de detectar el fenomeno mas rapido
@@ -248,10 +247,9 @@ tf = 0.5e-6*20; % Tiempo final
 
 %%
 % Matrices para guardar informacion de la simulacion
-n_m = steps;%round(20/100*steps);     % Numero de datos para muestreo
+n_m = round(20/100*steps);     % Numero de datos para muestreo
 
-Coordenadas_x = zeros(N_part,n_m);
-Coordenadas_y = zeros(N_part,n_m);
+Coordenadas = zeros(N_part,n_m);
 Velocidad1 = zeros(N_part,n_m);
 Velocidad2 = zeros(N_part,n_m);
 Presion = zeros(N_part,n_m);
@@ -260,21 +258,18 @@ Esfuerzos12 = zeros(N_part,n_m);
 Esfuerzos21 = zeros(N_part,n_m);
 Esfuerzos22 = zeros(N_part,n_m);
 Densidad = zeros(N_part,n_m);
-Colores = zeros(N_part,1);
-    Colores(1:T_np) = 1;
+
 %% Repulsion en la frontera
 n1 = 12;
 n2 = 4;
-%D_repulsion  = 20;
+D_repulsion  = 30;
 r0_repulsion = h*2;
-%
 %% Recorrido principal en el tiempo
 fprintf('Numero de Pasos = %d\n',steps)
 figure_count = 1;
 for ti = 1:steps
     %fprintf('%d..',ti);
-    dV1_r = zeros(N_part,1);
-    dV2_r = zeros(N_part,1);
+    
     
     %% Busqueda de Vecinos
     %
@@ -302,6 +297,9 @@ for ti = 1:steps
     % de cada una de las particulas del dominio.
     
     %% Recorrido en las particulas del Target
+    dV1_r = zeros(length(Particles),1);
+    dV2_r = zeros(length(Particles),1);
+    %{
     for i = 1:T_np
         kern{i} = kern1(Dist{i},h);
         dkernx{i} = dkernx1(Dist{i}, h, Particles, Nearpart{i}, i);
@@ -315,11 +313,6 @@ for ti = 1:steps
         %   particulas del objetivo y del proyectil, solo hago dos
         %   asignaciones y ninguna verificacion.
         P(i) = EOSmie(E_int(i), T_rho, T_C, T_S, Rho(i), T_gamma);
-        
-        % forzar Presion
-        P(i) = P(i) + Forzar_presion(P, Nearpart{i}, P(i), kern{i}, f_forzar);
-        P(i) = abs(real(P(i)));
-
         
         %%%Derivadas espaciales de las Velocidades
         [dv1dx1(i), dv1dx2(i), dv2dx1(i), dv2dx2(i)] = ...
@@ -411,21 +404,19 @@ for ti = 1:steps
            dkernx{i}, dkerny{i}, M, Nearpart{i}, i, cs, Dist{i}, Particles,...
            h, V1, V2, eps11(i), eps12(i), eps21(i), eps22(i));
     end
-    
-    
-    D_repulsion = 1*max(V1.^2+V2.^2);
+    %}
     for i = 1:T_np
     %%Repulsion
-       [dV1_r,dV2_r] = Repulsion_frontera(Particles, i, Nearpart, Dist,...
+       [ddV1,ddV2] = Repulsion_frontera(Particles, i, Nearpart, Dist,...
            D_repulsion, r0_repulsion, n1, n2, M);
-       %dV1 = dV1 + ddV1;
-       %dV2 = dV2 + ddV2;
+       dV1_r = dV1_r + ddV1;
+       dV2_r = dV2_r + ddV2;
        %[dV1, dV2] = [dV1, dV2] + [ddV1,ddV2];
     end
-    
+    %{
     %%%Avanzar la velocidad
-    V1(1:T_np) = V1(1:T_np) + dV1(1:T_np);%*dt*1e6;
-    V2(1:T_np) = V2(1:T_np) + dV2(1:T_np);%*dt*1e10;
+    V1(1:T_np) = V1(1:T_np) + dV1(1:T_np)*dt;
+    V2(1:T_np) = V2(1:T_np) + dV2(1:T_np)*dt;
     E_int(1:T_np) = E_int(1:T_np) + dE_int(1:T_np)*dt;
     
     %%%Correcciones
@@ -438,12 +429,12 @@ for ti = 1:steps
     end
     
     % No muevo las particlas del target
-    Particles(1:T_np,:) = Particles(1:T_np,:) + ...
-        [V1(1:T_np), V2(1:T_np)]*dt;
+    %Particles(1:T_np,:) = Particles(1:T_np,:) + ...
+    %    [V1(1:T_np), V2(1:T_np)]*dt;
     
     % Hasta aca se tiene configurado completamente la simulacion para
     % las particulas del target
-    
+    %}
     %% Recorrido en las particulas del Bullet
     for i = T_np+1:N_part
         kern{i} = kern1(Dist{i},h);
@@ -462,8 +453,8 @@ for ti = 1:steps
         % Forzar presion con aproximacion a los vecinos.
         % Con esto busco generar un gradiente de presion vertical que
         % genere las deofmaciones de taylor
-        P(i) = P(i) + Forzar_presion(P, Nearpart{i}, P(i), kern{i}, f_forzar);
-        P(i) = abs(real(P(i)));
+        P(i) = Forzar_presion(P, Nearpart{i}, P(i), kern{i}, f_forzar);
+        P(i) = abs(real(P(i)))*1e-2;
         %%%Derivadas espaciales de las Velocidades
         [dv1dx1(i), dv1dx2(i), dv2dx1(i), dv2dx2(i)] = ...
             Velgradesp(Rho, M, V1, V2, dkernx{i}, dkerny{i},...
@@ -524,8 +515,8 @@ for ti = 1:steps
     end 
     
     %%%Avanzar la velocidad
-    V1(T_np+1:N_part) = V1(T_np+1:N_part) + (dV1(T_np+1:N_part)+dV1_r(T_np+1:N_part))*dt*1e-6;%*1e-23;
-    V2(T_np+1:N_part) = V2(T_np+1:N_part) + (dV2(T_np+1:N_part)+dV2_r(T_np+1:N_part))*dt;%*1e9;
+    V1(T_np+1:N_part) = V1(T_np+1:N_part) + (dV1(T_np+1:N_part)+dV1_r(T_np+1:N_part))*dt;
+    V2(T_np+1:N_part) = V2(T_np+1:N_part) + (dV2(T_np+1:N_part)+dV2_r(T_np+1:N_part))*dt;
     E_int(T_np+1:N_part) = E_int(T_np+1:N_part) + dE_int(T_np+1:N_part)*dt;
     
     %%%Correcciones
@@ -550,7 +541,7 @@ for ti = 1:steps
     %figure(1)
     if mod(ti,1)==0
         figure(1)
-        p = Nearpart{round(length(Particles)-10)};
+        p = Nearpart{round(length(Particles)/2)};
         
         %plot(Particles(:,1), Particles(:,2),'.b')
         subplot(2,1,1)
@@ -562,7 +553,7 @@ for ti = 1:steps
         %caxis([-V_1/2,V_1])
         colorbar()
         grid()
-        %xlim([-4e-3,0.5e-3])
+        xlim([-4e-3,0.5e-3])
         ylim([-3e-3,3e-3])
         %axis('equal')
         drawnow
@@ -573,7 +564,7 @@ for ti = 1:steps
         title('Velocidad 2')
         %caxis([-1,1])
         colorbar()
-        %xlim([-4e-3,0.5e-3])
+        xlim([-4e-3,0.5e-3])
         ylim([-3e-3,3e-3])
         %axis('equal')
         drawnow
@@ -590,16 +581,13 @@ for ti = 1:steps
         drawnow
         
         subplot(2,1,2)
-        scatter(Particles(:,1),Particles(:,2),10,Colores,'filled')
-        hold on
-        scatter(Particles(p,1),Particles(p,2),30,'black')
-        hold off       
-        title(['Indentificando Particulas - step ', num2str(ti)])
+        %scatter(Particles(:,1),Particles(:,2),10,E_int,'filled')
+        plot(E_int,'Marker','o')
+        title('Energia Interna')
+        %caxis([-1,1])
         colorbar()
-        caxis([0,2])
-        grid()
-         xlim([-4e-3,0.5e-3])
-        ylim([-3e-3,3e-3])
+        %xlim([-3e-3,0])
+        %ylim([0,3e-3])
         %axis('equal')
         drawnow
         
@@ -624,20 +612,8 @@ for ti = 1:steps
        %print(ti) 
     end
     
-    %Guardar info
-    Coordenadas_x(:,ti) = Particles(:,1);
-    Coordenadas_y(:,ti) = Particles(:,2);
-    Velocidad1(:,ti) = V1;
-    Velocidad2(:,ti) = V2;
-    Presion(:,ti) = P;
-    Esfuerzos11(:,ti) = Tau11;
-    Esfuerzos12(:,ti) = Tau12;
-    Esfuerzos21(:,ti) = Tau21;
-    Esfuerzos22(:,ti) = Tau22;
-    Densidad(:,ti) = Rho;
-    
 end
-%toc
+toc
 %% Comentarios JC
 % 
 % Situaciones por corregir:
