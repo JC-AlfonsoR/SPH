@@ -3,21 +3,7 @@
 % Simulacion de impacto
 %
 %
-% Marzo 18 - 2015
-%
-% Author: *J. Camilo Alfonso R.*
-%
-% Codigo basado en rutinas de Ing. *Daniel Luna*
-%
-% Profesor Asesor: *Andres Gonzalez Mancera*
-%
-% _*Problema Especial IMEC*_
-%
-% Simulacion de impacto entre proyectil ductil y objetivo fragil
-%
-% Disponible en repositorio publico <https://github.com/JC-AlfonsoR/SPH.git SPH>
-%
-% _Se omiten tildes para evitar problemas de compatibilidad en ecoding_
+
 clear all; clc; close all;
 %% Definir Geometria del Objetivo
 % Todas las unidades son dadas en el sistema internacional de unidades

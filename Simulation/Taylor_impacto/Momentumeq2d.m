@@ -1,8 +1,8 @@
 function [dV1,dV2] = Momentumeq2d(dev11,dev12,dev21,dev22,P,rho,dkernx,dkerny,m,Npart,selfpart,cs,Dist,coorglobal,h,V1,V2)
 %Momentumeq2d
 %
-% Resuelve la ecuación de Momentum para particula selfpart. Calcula la 
-% derivadad total de las velocidades.
+% Resuelve la ecuaci�n de Momentum para particula selfpart. Calcula la 
+% derivadad total de las velocidades. Emplea aproximaci�n por part�culas.
 %
 %
 %   Inputs
@@ -38,7 +38,6 @@ sigma21a = dev21(selfpart);
 sigma22a = P(selfpart) + dev22(selfpart);
 dV1 = 0;
 dV2 = 0;
-f_f = 1e15;
 for i=1:length(Npart)
     NP = Npart(i);
     rhob = rho(NP);
@@ -48,23 +47,22 @@ for i=1:length(Npart)
     sigma21b = dev21(NP);
     sigma22b = P(NP) + dev22(NP);
     rhob21 = 1/(rhob*rhob);
-    dW = [dkernx(i) dkerny(i)]*1e-12; % Agrego 1e-5 para suavizar el efecto del kernel
+    dW = [dkernx dkerny];
     dx = abs(coorglobal(Npart(i),1) - coorglobal(selfpart,1));
     dy = abs(coorglobal(Npart(i),2) - coorglobal(selfpart,2));
     Mgh = Monaghanvisc(selfpart, NP, rho, cs, Dist(i), V1, V2, dx, dy, h);
-    dV1 = dV1 + mb*(sigma11a*rhoa21+sigma11b*rhob21+Mgh)*dW(1)*f_f*1e-10 +...
-        mb*(sigma12a*rhoa21+sigma12b*rhob21)*dW(2)*f_f*1e-10;
-    dV2 = dV2 + mb*(sigma21a*rhoa21+sigma21b*rhob21)*dW(1)*f_f +...
-        mb*(sigma22a*rhoa21+sigma22b*rhob21+Mgh)*dW(2)*f_f; % *10 e6 arbitrario para generar este desplazamiento
-
+    dV1 = dV1 + mb*(sigma11a*rhoa21+sigma11b*rhob21+Mgh)*dW(1) +...
+        mb*(sigma12a*rhoa21+sigma12b*rhob21)*dW(2);
+    dV2 = dV2 + mb*(sigma21a*rhoa21+sigma21b*rhob21)*dW(1) +...
+        mb*(sigma22a*rhoa21+sigma22b*rhob21+Mgh)*dW(2);
 end
 %% Referencias
 %{
-[1] D.Luna & A. Gonzalez, Estudio computacional de la fragmentación de
-materiales frágiles con el método de partículas suavizadas (SPH), Uniandes,
+[1] D.Luna & A. Gonzalez, Estudio computacional de la fragmentaci�n de
+materiales fr�giles con el m�todo de part�culas suavizadas (SPH), Uniandes,
 2015. (Ecuacion 23 - Conservacion de momentum dsicretizada)
 
 [2] G.R. Liu & M.B. Liu, Smoothed Particle Hydrodynamics - a meshfree particle
 ethod, World Scientifics Publishing Co., 2003. (Ecuacion 4.41 - 
-Conservacion de Momentum) pg 336
+Conservacion de Momentum)
 %}

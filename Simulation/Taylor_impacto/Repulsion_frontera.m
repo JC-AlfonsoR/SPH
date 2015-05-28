@@ -22,8 +22,8 @@ for i = 1:n
     yij = Particles(particula,2) - Particles(selfpart,2);
     
     if r0/rij <=1
-        F1(particula) = D*((r0/rij)^n1 - (r0/rij)^n2) * xij/rij^2;
-        F2(particula) = D*((r0/rij)^n1 - (r0/rij)^n2) * yij/rij^2;
+        F1(particula) = D*((r0/rij)^n1 - (ro/rij)^n2) * xij/rij^2;
+        F2(particula) = D*((r0/rij)^n1 - (ro/rij)^n2) * yij/rij^2;
     end
 end
 

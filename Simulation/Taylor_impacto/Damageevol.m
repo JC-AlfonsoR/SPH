@@ -1,28 +1,32 @@
 function [dD] = Damageevol(rho,M,C)
-% Damagevol
+%Damagevol
 %
 %
 %
-% [dD] = Damageevol(rho, M, C)
+%[dD] = Damageevol(rho, M, C)
 %
 %   Inputs
-%   rho         double      Densidad de la partÃ­cula
-%   M           double      Masa de la partÃ­cula
-%   C           double      Velocidad de crecimiento de la grieta
+%   rho         double      Densidad de la partícula
+%   M           double      Masa de la partícula
+%   C           double      ---
 %
 %   Outputs
-%   dD          double      Derivada del damage
+%   dD          double      Derivada del daño
 %
-num = 0.4*C; 
+num = 0.4*C;
 denom =((rho)/(pi()*M))^(1/2);
 dD = num/denom;
-
-% Calcula el crecimiento de una grieta en el delta de tiempo
 end
 
 %% Referencias
 %{
-[1] D.Luna & A. Gonzalez, Estudio computacional de la fragmentaciÃ³n de
-materiales frÃ¡giles con el mÃ©todo de partÃ­culas suavizadas (SPH), Uniandes,
-2015. (pg 10, EcuaciÃ³n 21)
+[1] D.Luna & A. Gonzalez, Estudio computacional de la fragmentación de
+materiales frágiles con el método de partículas suavizadas (SPH), Uniandes,
+2015. (pg 10, Ecuación 21)
+%}
+
+%% Comentarios Finales
+%{
+La función parece diferente de la que se reporta en el documneto.
+Preguntarle a Daniel.
 %}

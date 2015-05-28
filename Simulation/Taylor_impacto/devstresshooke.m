@@ -1,9 +1,9 @@
 function [ddev11,ddev12,ddev21,ddev22 ] = devstresshooke(dv1dx2,dv2dx1,dev11,dev12,dev21,dev22,eps11,eps21,eps22,mu)
-% devstreesshooke
+%devstreesshooke
 %
 %
 %
-% [ddev11, ddev12, ddev21, ddev22] =
+%[ddev11, ddev12, ddev21, ddev22] =
 %           devstresshooke(dv1dx2, dv2dx1, dev11, dev12, dev21, dev22,...
 %                           eps11, eps21, eps22, mu)
 %
@@ -14,9 +14,9 @@ function [ddev11,ddev12,ddev21,ddev22 ] = devstresshooke(dv1dx2,dv2dx1,dev11,dev
 %   dev12       double      Componente Esfuerzos en 12
 %   dev21       double      Componente Esfuerzos en 21
 %   dev22       double      Componente Esfuerzos en 22
-%   eps11       double      Deformaci贸n unitaria en 11
-%   eps21       double      Deformaci贸n unitaria en 21
-%   eps22       double      Deformaci贸n unitaria en 22
+%   eps11       double      Deformaci髇 unitaria en 11
+%   eps21       double      Deformaci髇 unitaria en 21
+%   eps22       double      Deformaci髇 unitaria en 22
 %   mu          double      Modulo de Cortante
 %
 %   Outputs
@@ -41,7 +41,12 @@ function [ddev11,ddev12,ddev21,ddev22 ] = devstresshooke(dv1dx2,dv2dx1,dev11,dev
 end
 %% Referencias
 %{
-[1] D.Luna & A. Gonzalez, Estudio computacional de la fragmentaci贸n de
-materiales fr谩giles con el m茅todo de part铆culas suavizadas (SPH), Uniandes,
+[1] D.Luna & A. Gonzalez, Estudio computacional de la fragmentaci髇 de
+materiales fr醙iles con el m閠odo de part韈ulas suavizadas (SPH), Uniandes,
 2015. (pg 9, Ecuaciones 12 - 14 );
+%}
+
+%% Comentarios Finales
+%{
+Preungtarle a Daniel como trabaja esta funci髇
 %}

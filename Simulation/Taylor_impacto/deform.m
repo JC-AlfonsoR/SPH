@@ -1,9 +1,9 @@
 function [eps11,eps12,eps21,eps22] = deform(dv1dx1,dv1dx2,dv2dx1,dv2dx2)
-% deform
+%deform
 %
-% Calcula el tensor de deformaci贸n unitaria para un part铆cula. 
+% Calcula el tensor de deformaci髇 unitaria para un part韈ula. 
 %
-% [eps11, eps12, eps21, eps22] = deform(dv1dx1, dv1dx2, dv2dx1, dv2dx2)
+%[eps11, eps12, eps21, eps22] = deform(dv1dx1, dv1dx2, dv2dx1, dv2dx2)
 %
 %   Inputs
 %   dv1dx1      double      Derivada de V1 en dir 1
@@ -12,10 +12,10 @@ function [eps11,eps12,eps21,eps22] = deform(dv1dx1,dv1dx2,dv2dx1,dv2dx2)
 %   dv2dx2      double      Derivada de V2 en dir 2
 %
 %   Outputs
-%   eps11       double      Deformaci贸n unitaria en dir 11
-%   eps12       double      Deformaci贸n unitaria en dir 12
-%   eps21       double      Deformaci贸n unitaria en dir 21
-%   eps22       double      Deformaci贸n unitaria en dir 22
+%   eps11       double      Deformaci髇 unitaria en dir 11
+%   eps12       double      Deformaci髇 unitaria en dir 12
+%   eps21       double      Deformaci髇 unitaria en dir 21
+%   eps22       double      Deformaci髇 unitaria en dir 22
 %
         eps11 = dv1dx1;
         eps12 =0.5*(dv1dx2 + dv2dx1);
@@ -25,4 +25,9 @@ end
 %% Referencias
 %{
 http://es.wikipedia.org/wiki/Tensor_deformaci%C3%B3n
+%}
+
+%% Comentarios finales
+%{
+El c骴igo esta correcto
 %}

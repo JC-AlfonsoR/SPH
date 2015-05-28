@@ -1,8 +1,8 @@
 function [drho] = derivadarho(M,V1,V2,dWx,dWy,Npart,selfpart)
 % derivadarho
 %
-% Aproxima la derivada de la densidad en la particula selfpart a traves de
-% la aproximacion por particulas
+% Aproxima la derivada de la densidad en la particula selfpart a traves del
+% método de SPH
 %
 %[drho] = derivadarho(M, V1, V2, dWx, dWy, Npart, selfpart)
 %
@@ -16,11 +16,11 @@ function [drho] = derivadarho(M,V1,V2,dWx,dWy,Npart,selfpart)
 %                             n particulas vecinas de la aprticula selfpart
 %   Npart       [1 x n]         Identidad de las n particulas vecinas de la
 %                               particula selpart
-%   selfpart    int             Identidad de la partÃ­cula actual
+%   selfpart    int             Identidad de la partícula actual
 %
 %   Output
 %   drho        double          Derivada de la densidad en la particula
-%                               actual
+%   actual
 %
 %
 
@@ -39,7 +39,11 @@ drho = sum;
 end
 %% Referencias
 %{
-[1] D.Luna & A. Gonzalez, Estudio computacional de la fragmentaciÃ³n de
-materiales frÃ¡giles con el mÃ©todo de partÃ­culas suavizadas (SPH), Uniandes,
-2015. (Ecuacion 22 - EcuaciÃ³n de continuidad discretizada)
+[1] D.Luna & A. Gonzalez, Estudio computacional de la fragmentación de
+materiales frágiles con el método de partículas suavizadas (SPH), Uniandes,
+2015. (Ecuacion 22 - Ecuación de continuidad discretizada)
+%}
+%% Comentarios
+%{
+---
 %}

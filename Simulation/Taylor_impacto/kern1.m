@@ -1,5 +1,5 @@
 function [kern] = kern1(rij,hk)
-% Calcula el valor de Kernel par las partÃ­culas que se encuentran a 
+% Calcula el valor de Kernel par las partículas que se encuentran a 
 %distancias rij. El calculo se hace con un dominio de radio hk
 %
 %[kern] = kern1(rij, hk)
@@ -7,11 +7,11 @@ function [kern] = kern1(rij,hk)
 %    Inputs
 %    rij     [1 x n]     Vector con las n distancias de las n particulas
 %                        vecinas a la particula i
-%    hk      double      Radio del dominio soporte para partÃ­cula i
+%    hk      double      Radio del dominio soporte para partícula i
 %
 %    Outputs
 %    kern    [n x 1]     Vector con la magnitud del kernel evaluado para las
-%                        n partÃ­culas vecinas
+%                        n partículas vecinas
 %
 
 kern = zeros(length(rij),1);        % [n x 1]   vector de 0's
@@ -30,7 +30,7 @@ end
 
 %% Comentarios Finales
 %{
-El kernel que de la funciÃ³n no es el Kernel de Johnson et al.,1996b
+El kernel que de la función no es el Kernel de Johnson et al.,1996b
 El de Johnson es de orden 2, mientras que este kernel es de orden 5.
 
 %La forma del kernel fue verificada con el sigueinte codigo:
@@ -40,12 +40,9 @@ plot(a,k); xlabel('Distancia R'); ylabel('Valor Kernel')
 
 Se obtiene la forma general del kernel, pero no las propiedades
 especificadas en referencias. A medida que h tiende a cero, se obtiene una
-grÃ¡fica que en R=0 es mayor a 1. Para esta condiciÃ³n, el kernel no se
+gráfica que en R=0 es mayor a 1. Para esta condición, el kernel no se
 parece al delta de dirac a medida que h tiende a 0
-%}
-%% Referencias
-%{
-[1] G.R. Liu & M.B. Liu, Smoothed Particle Hydrodynamics - a meshfree particle
-ethod, World Scientifics Publishing Co., 2003. (Tabla 3.1 - Resumen de kernels)
-pg 102 - quintic smoothing function
+~~ Verificar que la integral del kernel =~ 1
+
+~~~> preguntarle a Daniel que kernel empleó
 %}
